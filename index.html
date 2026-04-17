@@ -2,872 +2,427 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <title>Adobe AI Week 2026 · Knowledge Quiz</title>
 <style>
-/* ── ALL FONTS ARE SYSTEM FONTS — NO EXTERNAL REQUESTS ── */
-:root {
-  --red: #FA0F00;
-  --red2: #D40D00;
-  --redsoft: rgba(250,15,0,.06);
-  --ink: #111;
-  --ink70: #404040;
-  --ink40: #888;
-  --ink20: #ccc;
-  --ink10: #E8E8E8;
-  --ink05: #F5F5F7;
-  --white: #fff;
-  /* System font stack — renders perfectly on Windows, Mac, iOS, Android */
-  --sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
-  /* Serif fallback for display text */
-  --serif: Georgia, 'Times New Roman', serif;
-  --ease: cubic-bezier(.25,.46,.45,.94);
-}
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+  :root {
+    --adobe-red: #FA0F00;
+    --adobe-red-dark: #C40000;
+    --adobe-red-light: #FFF0EF;
+    --adobe-red-mid: #FFE0DE;
+    --ink: #1A1A2E;
+    --ink-60: #6B6B8A;
+    --ink-30: #B8B8CC;
+    --ink-10: #F2F2F7;
+    --white: #FFFFFF;
+    --card-shadow: 0 2px 12px rgba(26,26,46,0.08), 0 1px 3px rgba(26,26,46,0.06);
+    --radius: 16px;
+    --radius-sm: 10px;
+    --font-display: Georgia, 'Times New Roman', serif;
+    --font-body: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+  body { font-family: var(--font-body); background: #F8F8FC; color: var(--ink); min-height: 100vh; overflow-x: hidden; }
+  body::before { content: ''; position: fixed; top: -200px; right: -200px; width: 600px; height: 600px; background: radial-gradient(circle, rgba(250,15,0,0.06) 0%, transparent 70%); pointer-events: none; z-index: 0; }
+  body::after { content: ''; position: fixed; bottom: -150px; left: -150px; width: 500px; height: 500px; background: radial-gradient(circle, rgba(250,15,0,0.04) 0%, transparent 70%); pointer-events: none; z-index: 0; }
 
-body {
-  font-family: var(--sans);
-  background: #F5F5F7;
-  color: var(--ink);
-  min-height: 100vh;
-  overflow-x: hidden;
-}
+  /* HEADER */
+  .site-header { background: var(--white); border-bottom: 1px solid rgba(26,26,46,0.07); padding: 0 40px; height: 64px; display: flex; align-items: center; position: sticky; top: 0; z-index: 100; box-shadow: 0 1px 0 rgba(26,26,46,0.05); }
+  .adobe-logo { display: flex; align-items: center; gap: 12px; }
+  .adobe-logo-mark { width: 38px; height: 38px; background: var(--adobe-red); border-radius: 6px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  .adobe-logo-mark svg { width: 24px; height: 20px; display: block; }
+  .adobe-logo-text { font-size: 15px; font-weight: 700; letter-spacing: 0.01em; color: var(--ink); }
+  .header-badge { margin-left: auto; background: var(--adobe-red-light); color: var(--adobe-red); font-size: 11px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; padding: 4px 12px; border-radius: 20px; border: 1px solid var(--adobe-red-mid); }
 
-/* subtle dot grid - pure CSS, no images */
-body::before {
-  content: '';
-  position: fixed; inset: 0;
-  background-image: radial-gradient(circle, rgba(0,0,0,.08) 1px, transparent 1px);
-  background-size: 28px 28px;
-  pointer-events: none; z-index: 0;
-}
+  /* CONTAINER */
+  .container { max-width: 780px; margin: 0 auto; padding: 48px 24px 80px; position: relative; z-index: 1; }
 
-/* ── HEADER ── */
-.hdr {
-  position: sticky; top: 0; z-index: 100;
-  background: rgba(255,255,255,.95);
-  -webkit-backdrop-filter: blur(20px);
-  backdrop-filter: blur(20px);
-  border-bottom: 1px solid rgba(0,0,0,.08);
-  padding: 0 40px; height: 56px;
-  display: flex; align-items: center; gap: 12px;
-}
+  /* HERO */
+  .quiz-hero { text-align: center; margin-bottom: 40px; animation: fadeUp 0.6s ease both; }
+  .quiz-eyebrow { display: inline-flex; align-items: center; gap: 6px; font-size: 12px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--adobe-red); margin-bottom: 16px; }
+  .quiz-eyebrow::before, .quiz-eyebrow::after { content: ''; display: block; width: 20px; height: 1px; background: var(--adobe-red); opacity: 0.4; }
+  .quiz-title { font-family: var(--font-display); font-size: clamp(30px, 5vw, 48px); font-weight: 400; color: var(--ink); line-height: 1.1; margin-bottom: 12px; letter-spacing: -0.02em; }
+  .quiz-title span { color: var(--adobe-red); font-style: italic; }
+  .quiz-subtitle { font-size: 16px; color: var(--ink-60); font-weight: 300; line-height: 1.5; max-width: 480px; margin: 0 auto; }
 
-/* ── PROPER ADOBE LOGO — matches the real Adobe mark exactly ── */
-.adobe-logo-wrap {
-  display: flex; align-items: center; gap: 9px; flex-shrink: 0;
-}
-.adobe-logo-icon {
-  width: 36px; height: 36px;
-  background: var(--red);
-  border-radius: 6px;
-  display: flex; align-items: center; justify-content: center;
-  flex-shrink: 0;
-}
-/* The Adobe A mark is two triangles — left solid, right slightly transparent */
-.adobe-logo-icon svg { width: 22px; height: 19px; display: block; }
-.adobe-logo-name {
-  font-family: var(--sans);
-  font-size: 15px; font-weight: 700;
-  color: var(--ink); letter-spacing: -.01em;
-}
+  /* INFOGRAPHIC STRIP */
+  .infographic-strip { margin-bottom: 40px; animation: fadeUp 0.6s 0.05s ease both; }
+  .strip-label { font-size: 10px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-30); text-align: center; margin-bottom: 16px; }
 
-.hdr-divider { width: 1px; height: 18px; background: var(--ink10); }
-.hdr-label {
-  font-size: 11px; font-weight: 600;
-  letter-spacing: .1em; text-transform: uppercase;
-  color: var(--ink40);
-}
-.hdr-pill {
-  margin-left: auto;
-  background: var(--ink);
-  color: var(--white);
-  font-size: 9px; font-weight: 700;
-  letter-spacing: .1em; text-transform: uppercase;
-  padding: 4px 12px; border-radius: 100px;
-}
+  .topic-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-bottom: 10px; }
+  .topic-card { background: var(--white); border: 1.5px solid var(--ink-10); border-radius: 14px; padding: 16px 12px 13px; text-align: center; box-shadow: 0 1px 4px rgba(26,26,46,0.05); transition: border-color 0.2s, box-shadow 0.2s, transform 0.18s; position: relative; overflow: hidden; cursor: default; }
+  .topic-card::after { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: var(--adobe-red); transform: scaleX(0); transition: transform 0.2s; transform-origin: left; }
+  .topic-card:hover { border-color: rgba(250,15,0,0.2); box-shadow: 0 4px 14px rgba(250,15,0,0.09); transform: translateY(-2px); }
+  .topic-card:hover::after { transform: scaleX(1); }
+  .topic-icon { font-size: 22px; line-height: 1; margin-bottom: 8px; display: block; }
+  .topic-name { font-size: 11px; font-weight: 700; color: var(--ink); line-height: 1.3; }
+  .topic-count { font-size: 9.5px; color: var(--ink-30); font-weight: 500; margin-top: 2px; }
 
-/* ── HERO ── */
-.hero {
-  position: relative; z-index: 1;
-  max-width: 860px; margin: 0 auto;
-  padding: 56px 40px 44px;
-  display: flex; justify-content: space-between; align-items: flex-end; gap: 32px;
-}
-.hero-left { flex: 1; }
+  /* Cybersecurity row — dark theme, red accent */
+  .cyber-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .cyber-card { background: linear-gradient(135deg, #1A1A2E 0%, #252540 100%); border: 1.5px solid rgba(250,15,0,0.28); border-radius: 14px; padding: 15px 18px; display: flex; align-items: center; gap: 14px; box-shadow: 0 2px 10px rgba(26,26,46,0.14); transition: transform 0.18s, box-shadow 0.18s; cursor: default; }
+  .cyber-card:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(250,15,0,0.14); }
+  .cyber-icon { width: 38px; height: 38px; border-radius: 9px; background: rgba(250,15,0,0.14); border: 1px solid rgba(250,15,0,0.28); display: flex; align-items: center; justify-content: center; font-size: 17px; flex-shrink: 0; }
+  .cyber-info {}
+  .cyber-title { font-size: 12px; font-weight: 700; color: #fff; letter-spacing: 0.01em; line-height: 1.3; }
+  .cyber-sub { font-size: 10px; color: rgba(255,255,255,0.4); margin-top: 2px; line-height: 1.3; }
+  .cyber-badge { display: inline-block; font-size: 9px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; background: rgba(250,15,0,0.2); color: rgba(250,15,0,0.9); padding: 1px 6px; border-radius: 4px; margin-top: 4px; }
 
-.hero-tag {
-  display: inline-flex; align-items: center; gap: 7px;
-  font-size: 10px; font-weight: 700;
-  letter-spacing: .14em; text-transform: uppercase;
-  color: var(--red); margin-bottom: 16px;
-}
-.tag-dot {
-  width: 5px; height: 5px; border-radius: 50%;
-  background: var(--red);
-  animation: blink 2s ease infinite;
-}
-@keyframes blink {
-  0%,100%{opacity:1;transform:scale(1)}
-  50%{opacity:.35;transform:scale(.5)}
-}
+  /* NAME CARD */
+  .name-card { background: var(--white); border-radius: var(--radius); padding: 28px 32px; box-shadow: var(--card-shadow); margin-bottom: 32px; border: 1.5px solid transparent; transition: border-color 0.2s, box-shadow 0.2s; animation: fadeUp 0.6s 0.1s ease both; }
+  .name-card:focus-within { border-color: var(--adobe-red); box-shadow: 0 0 0 4px rgba(250,15,0,0.08), var(--card-shadow); }
+  .name-card label { display: block; font-size: 11px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-60); margin-bottom: 10px; }
+  .name-card label span { color: var(--adobe-red); }
+  .name-input { width: 100%; border: none; outline: none; font-family: var(--font-body); font-size: 18px; font-weight: 500; color: var(--ink); background: transparent; caret-color: var(--adobe-red); }
+  .name-input::placeholder { color: var(--ink-30); font-weight: 300; }
+  .name-underline { height: 1px; background: var(--ink-10); margin-top: 10px; border-radius: 2px; transition: background 0.2s; }
+  .name-card:focus-within .name-underline { background: var(--adobe-red-mid); }
 
-.hero-h1 {
-  font-family: var(--serif);
-  font-size: clamp(38px, 6.5vw, 68px);
-  font-weight: 400; line-height: .96;
-  letter-spacing: -.02em; color: var(--ink);
-  margin-bottom: 18px;
-}
-.hero-h1 em { font-style: italic; color: var(--red); }
-.hero-h1 strong { font-weight: 700; font-style: normal; }
+  /* PROGRESS */
+  .progress-bar-wrap { margin-bottom: 28px; animation: fadeUp 0.6s 0.15s ease both; }
+  .progress-meta { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
+  .progress-label { font-size: 12px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; color: var(--ink-60); }
+  .progress-count { font-size: 12px; font-weight: 600; color: var(--adobe-red); }
+  .progress-track { height: 4px; background: var(--ink-10); border-radius: 4px; overflow: hidden; }
+  .progress-fill { height: 100%; background: var(--adobe-red); border-radius: 4px; transition: width 0.4s cubic-bezier(0.4,0,0.2,1); width: 0%; }
 
-.hero-desc {
-  font-size: 14px; line-height: 1.7;
-  color: var(--ink70); max-width: 440px;
-}
+  /* QUESTION CARDS */
+  .question-card { background: var(--white); border-radius: var(--radius); padding: 32px; box-shadow: var(--card-shadow); margin-bottom: 20px; border: 1.5px solid transparent; transition: border-color 0.2s, box-shadow 0.2s, transform 0.2s; animation: fadeUp 0.5s ease both; position: relative; overflow: hidden; -webkit-tap-highlight-color: transparent; }
+  .question-card:hover { box-shadow: 0 8px 28px rgba(26,26,46,0.1); transform: translateY(-1px); }
+  .question-card::before { content: ''; position: absolute; top: 0; left: 0; width: 4px; height: 100%; background: var(--ink-10); transition: background 0.25s; }
+  .question-card.answered::before { background: var(--adobe-red); }
+  .question-card.answered { border-color: rgba(250,15,0,0.1); }
+  .question-header { display: flex; align-items: flex-start; gap: 16px; margin-bottom: 24px; }
+  .q-number { flex-shrink: 0; width: 32px; height: 32px; background: var(--ink-10); border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 700; color: var(--ink-60); transition: background 0.25s, color 0.25s; }
+  .question-card.answered .q-number { background: var(--adobe-red); color: var(--white); }
+  .q-tag { flex-shrink: 0; font-size: 10px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; background: var(--ink-10); color: var(--ink-60); padding: 3px 9px; border-radius: 20px; margin-top: 6px; }
+  .q-text { font-size: 16px; line-height: 1.55; font-weight: 500; color: var(--ink); flex: 1; padding-top: 4px; }
 
-.hero-stat {
-  flex-shrink: 0;
-  border-left: 3px solid var(--red);
-  padding-left: 18px; padding-bottom: 4px;
-}
-.stat-n {
-  font-family: var(--serif);
-  font-size: 52px; font-weight: 700; line-height: 1; color: var(--ink);
-}
-.stat-l {
-  font-size: 10px; font-weight: 700;
-  letter-spacing: .1em; text-transform: uppercase;
-  color: var(--ink40); margin-top: 4px;
-}
+  /* OPTIONS */
+  .options-grid { display: grid; gap: 10px; }
+  .option-label { display: flex; align-items: center; gap: 14px; padding: 14px 18px; border-radius: var(--radius-sm); border: 1.5px solid var(--ink-10); cursor: pointer; transition: border-color 0.18s, background 0.18s, transform 0.12s; user-select: none; -webkit-tap-highlight-color: transparent; touch-action: manipulation; }
+  .option-label:hover { border-color: rgba(250,15,0,0.3); background: var(--adobe-red-light); transform: translateX(2px); }
+  .option-label input[type="radio"] { display: none; }
+  .option-label input[type="radio"]:checked ~ .option-dot { background: var(--adobe-red); border-color: var(--adobe-red); box-shadow: 0 0 0 3px rgba(250,15,0,0.15); }
+  .option-label input[type="radio"]:checked ~ .option-dot::after { opacity: 1; }
+  .option-label:has(input:checked) { border-color: var(--adobe-red); background: var(--adobe-red-light); }
+  .option-dot { width: 18px; height: 18px; flex-shrink: 0; border-radius: 50%; border: 2px solid var(--ink-30); background: var(--white); transition: all 0.18s; position: relative; }
+  .option-dot::after { content: ''; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 8px; height: 8px; border-radius: 50%; background: var(--white); opacity: 0; transition: opacity 0.15s; }
+  .option-letter { font-size: 11px; font-weight: 700; color: var(--ink-60); width: 18px; flex-shrink: 0; text-transform: uppercase; }
+  .option-label:has(input:checked) .option-letter { color: var(--adobe-red); }
+  .option-text { font-size: 14.5px; line-height: 1.45; color: var(--ink); font-weight: 400; }
 
-/* ── MAIN WRAP ── */
-.wrap {
-  position: relative; z-index: 1;
-  max-width: 860px; margin: 0 auto;
-  padding: 0 40px 80px;
-}
+  /* SUBMIT */
+  .submit-section { margin-top: 40px; text-align: center; animation: fadeUp 0.6s 0.2s ease both; }
+  .submit-hint { font-size: 13px; color: var(--ink-60); margin-bottom: 20px; }
+  .submit-hint strong { color: var(--ink); }
+  .btn-submit { display: inline-flex; align-items: center; gap: 10px; background: var(--adobe-red); color: var(--white); font-family: var(--font-body); font-size: 15px; font-weight: 600; border: none; border-radius: 50px; padding: 16px 40px; cursor: pointer; transition: background 0.18s, transform 0.15s, box-shadow 0.18s; box-shadow: 0 4px 16px rgba(250,15,0,0.25); -webkit-tap-highlight-color: transparent; touch-action: manipulation; }
+  .btn-submit:hover { background: var(--adobe-red-dark); transform: translateY(-2px); box-shadow: 0 8px 24px rgba(250,15,0,0.35); }
+  .btn-submit:active { transform: translateY(0); }
+  .btn-submit svg { width: 18px; height: 18px; }
+  .btn-submit:disabled { background: var(--ink-30); cursor: not-allowed; box-shadow: none; transform: none; }
 
-/* ── SECTION LABEL ── */
-.sec-lbl {
-  font-size: 10px; font-weight: 700;
-  letter-spacing: .14em; text-transform: uppercase;
-  color: var(--ink40); margin-bottom: 10px; padding-left: 2px;
-}
+  /* ADMIN */
+  .admin-section { margin-top: 24px; opacity: 0; pointer-events: none; height: 0; overflow: hidden; transition: opacity 0.3s; }
+  .admin-section.visible { opacity: 1; pointer-events: all; height: auto; }
+  .admin-trigger { font-size: 11px; color: var(--ink-10); cursor: default; user-select: none; margin-top: 20px; display: block; transition: color 0.3s; }
+  .admin-trigger:hover { color: var(--ink-30); }
+  .btn-download { display: inline-flex; align-items: center; gap: 8px; background: transparent; color: var(--ink-60); font-family: var(--font-body); font-size: 13px; font-weight: 500; border: 1.5px solid var(--ink-30); border-radius: 8px; padding: 10px 20px; cursor: pointer; transition: all 0.18s; }
+  .btn-download:hover { border-color: var(--adobe-red); color: var(--adobe-red); background: var(--adobe-red-light); }
+  .btn-download svg { width: 15px; height: 15px; }
 
-/* ── NAME FIELD ── */
-.name-card {
-  background: var(--white);
-  border: 1.5px solid var(--ink10);
-  border-radius: 14px; padding: 20px 26px;
-  margin-bottom: 40px;
-  transition: border-color .2s, box-shadow .2s;
-  position: relative; overflow: hidden;
-  animation: fadeUp .4s var(--ease) both;
-}
-.name-card::before {
-  content: ''; position: absolute; left: 0; top: 0; bottom: 0;
-  width: 3px; background: var(--ink10); transition: background .2s;
-}
-.name-card:focus-within {
-  border-color: rgba(250,15,0,.3);
-  box-shadow: 0 0 0 4px var(--redsoft), 0 4px 18px rgba(0,0,0,.05);
-}
-.name-card:focus-within::before { background: var(--red); }
+  /* SUCCESS */
+  .success-overlay { display: none; position: fixed; inset: 0; background: rgba(248,248,252,0.96); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); z-index: 200; align-items: center; justify-content: center; padding: 20px; }
+  .success-overlay.show { display: flex; }
+  .success-box { background: var(--white); border-radius: 24px; padding: 56px 48px; text-align: center; max-width: 480px; width: 100%; box-shadow: 0 32px 80px rgba(26,26,46,0.15); animation: popIn 0.5s cubic-bezier(0.34,1.56,0.64,1) both; }
+  .success-icon { width: 72px; height: 72px; background: linear-gradient(135deg, #00C851, #00A341); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 24px; animation: successPulse 0.6s 0.3s ease both; }
+  .success-icon svg { width: 36px; height: 36px; color: white; }
+  .success-title { font-family: var(--font-display); font-size: 28px; color: var(--ink); margin-bottom: 12px; line-height: 1.2; }
+  .success-msg { font-size: 15px; color: var(--ink-60); line-height: 1.6; margin-bottom: 8px; }
+  .success-name { display: inline-block; font-weight: 600; color: var(--adobe-red); font-size: 16px; margin-bottom: 28px; }
+  .success-footer { font-size: 12px; color: var(--ink-30); letter-spacing: 0.04em; }
 
-.name-lbl {
-  display: block; font-size: 10.5px; font-weight: 700;
-  letter-spacing: .1em; text-transform: uppercase;
-  color: var(--ink40); margin-bottom: 8px;
-}
-.name-lbl span { color: var(--red); }
-.name-inp {
-  width: 100%; border: none; outline: none;
-  font-family: var(--serif); font-size: 21px; font-weight: 400;
-  color: var(--ink); background: transparent;
-  caret-color: var(--red); line-height: 1.3;
-}
-.name-inp::placeholder { color: var(--ink20); font-style: italic; }
+  /* VALIDATION */
+  .validation-msg { background: #FFF3CD; border: 1px solid #FFEAA7; border-radius: 10px; padding: 12px 18px; font-size: 13px; color: #856404; margin-bottom: 16px; display: none; }
+  .validation-msg.show { display: block; }
 
-/* ── PROGRESS ── */
-.prog-wrap {
-  margin-bottom: 32px;
-  animation: fadeUp .4s .08s var(--ease) both;
-}
-.prog-top {
-  display: flex; justify-content: space-between; align-items: baseline;
-  margin-bottom: 8px;
-}
-.prog-lbl {
-  font-size: 10.5px; font-weight: 700;
-  letter-spacing: .12em; text-transform: uppercase; color: var(--ink40);
-}
-.prog-num {
-  font-family: var(--serif); font-size: 17px;
-  color: var(--red); font-weight: 700;
-}
-.prog-track {
-  height: 3px; background: var(--ink10);
-  border-radius: 3px; overflow: visible; position: relative;
-}
-.prog-fill {
-  height: 100%;
-  background: linear-gradient(90deg, var(--red2), var(--red));
-  border-radius: 3px; width: 0%;
-  transition: width .5s var(--ease); position: relative;
-}
-.prog-fill::after {
-  content: ''; position: absolute; right: -4px; top: 50%;
-  transform: translateY(-50%);
-  width: 8px; height: 8px; border-radius: 50%;
-  background: var(--red); box-shadow: 0 0 8px rgba(250,15,0,.5);
-  opacity: 0; transition: opacity .3s;
-}
-.prog-fill.live::after { opacity: 1; }
+  /* ANIMATIONS */
+  @keyframes fadeUp { from { opacity:0; transform:translateY(20px); } to { opacity:1; transform:translateY(0); } }
+  @keyframes popIn { from { opacity:0; transform:scale(0.85); } to { opacity:1; transform:scale(1); } }
+  @keyframes successPulse { 0% { transform:scale(0); opacity:0; } 60% { transform:scale(1.15); } 100% { transform:scale(1); opacity:1; } }
 
-/* ── QUESTION CARDS ── */
-.q-card {
-  background: var(--white);
-  border: 1.5px solid var(--ink10);
-  border-radius: 16px; padding: 28px 28px 22px;
-  margin-bottom: 14px;
-  transition: border-color .2s, box-shadow .2s, transform .18s;
-  animation: fadeUp .4s var(--ease) both;
-  position: relative; overflow: hidden;
-  /* tap highlight off on mobile */
-  -webkit-tap-highlight-color: transparent;
-}
-.q-card:hover {
-  border-color: rgba(0,0,0,.12);
-  box-shadow: 0 6px 24px rgba(0,0,0,.06);
-  transform: translateY(-1px);
-}
-.q-card.done { border-color: rgba(250,15,0,.25); }
-.q-bar {
-  position: absolute; top: 0; left: 0; bottom: 0;
-  width: 3px; background: var(--ink10); transition: background .25s;
-}
-.q-card.done .q-bar { background: var(--red); }
+  /* FOOTER */
+  .site-footer { text-align: center; padding: 40px 24px 24px; position: relative; z-index: 1; }
+  .footer-divider { width: 40px; height: 2px; background: var(--ink-10); border-radius: 2px; margin: 0 auto 16px; }
+  .footer-text { font-size: 12px; color: var(--ink-30); letter-spacing: 0.04em; }
 
-.q-meta {
-  display: flex; align-items: center; gap: 8px; margin-bottom: 14px;
-}
-.q-num {
-  font-size: 9.5px; font-weight: 800;
-  letter-spacing: .07em; text-transform: uppercase;
-  background: var(--ink05); color: var(--ink40);
-  padding: 3px 10px; border-radius: 100px;
-  transition: background .2s, color .2s;
-}
-.q-card.done .q-num { background: var(--red); color: var(--white); }
-.q-tag {
-  font-size: 9.5px; font-weight: 600;
-  letter-spacing: .07em; text-transform: uppercase;
-  color: var(--ink40); background: var(--ink05);
-  padding: 3px 10px; border-radius: 100px;
-}
-.q-tick {
-  margin-left: auto; width: 22px; height: 22px;
-  border-radius: 50%; border: 1.5px solid var(--ink10);
-  display: grid; place-items: center; flex-shrink: 0;
-  transition: all .2s;
-}
-.q-tick svg { width: 10px; height: 10px; transition: stroke .2s; }
-.q-card.done .q-tick { background: var(--red); border-color: var(--red); }
-.q-card.done .q-tick svg { stroke: white !important; }
-
-.q-text {
-  font-family: var(--serif);
-  font-size: 17.5px; font-weight: 400;
-  line-height: 1.55; color: var(--ink);
-  margin-bottom: 18px; letter-spacing: -.01em;
-}
-
-/* ── OPTIONS ── */
-.opts { display: grid; gap: 8px; }
-.opt {
-  display: flex; align-items: center; gap: 12px;
-  padding: 11px 14px;
-  border: 1.5px solid var(--ink10);
-  border-radius: 10px; cursor: pointer;
-  transition: border-color .15s, background .15s;
-  user-select: none; position: relative; overflow: hidden;
-  background: transparent;
-  -webkit-tap-highlight-color: transparent;
-  /* ensure touch works on mobile */
-  touch-action: manipulation;
-}
-.opt:hover { border-color: rgba(250,15,0,.25); background: var(--redsoft); }
-.opt input[type="radio"] { display: none; }
-.opt:has(input:checked) {
-  border-color: var(--red);
-  background: rgba(250,15,0,.04);
-}
-.opt-dot {
-  width: 17px; height: 17px; flex-shrink: 0;
-  border-radius: 50%; border: 2px solid var(--ink20);
-  background: var(--white); transition: all .15s; position: relative;
-}
-.opt:has(input:checked) .opt-dot {
-  background: var(--red); border-color: var(--red);
-  box-shadow: 0 0 0 3px rgba(250,15,0,.12);
-}
-.opt-dot::after {
-  content: ''; position: absolute; top: 50%; left: 50%;
-  transform: translate(-50%,-50%) scale(0);
-  width: 6px; height: 6px; border-radius: 50%; background: white;
-  transition: transform .15s;
-}
-.opt:has(input:checked) .opt-dot::after { transform: translate(-50%,-50%) scale(1); }
-.opt-l {
-  font-size: 10px; font-weight: 800;
-  color: var(--ink40); width: 14px; flex-shrink: 0;
-  transition: color .12s;
-}
-.opt:has(input:checked) .opt-l { color: var(--red); }
-.opt-txt {
-  font-size: 13.5px; line-height: 1.48;
-  color: var(--ink70); flex: 1;
-}
-.opt:has(input:checked) .opt-txt { color: var(--ink); font-weight: 500; }
-
-/* ── SUBMIT ── */
-.submit-area {
-  margin-top: 44px;
-  display: flex; gap: 20px; align-items: center;
-  flex-wrap: wrap;
-  animation: fadeUp .4s .18s var(--ease) both;
-}
-.submit-note {
-  flex: 1; font-size: 13px; color: var(--ink40); line-height: 1.65;
-  min-width: 200px;
-}
-.submit-note strong { color: var(--ink70); font-weight: 600; }
-
-.val-alert {
-  display: none; width: 100%;
-  background: #FFFBEB; border: 1px solid #FDE68A;
-  border-left: 3px solid #F59E0B;
-  border-radius: 10px; padding: 11px 16px;
-  font-size: 13px; color: #78350F; font-weight: 500;
-  margin-bottom: 0;
-}
-.val-alert.on { display: block; }
-
-.btn-submit {
-  display: inline-flex; align-items: center; gap: 9px;
-  background: var(--red); color: var(--white);
-  font-family: var(--sans); font-size: 13px; font-weight: 700;
-  letter-spacing: .06em; text-transform: uppercase;
-  border: none; border-radius: 100px;
-  padding: 15px 32px; cursor: pointer; white-space: nowrap;
-  transition: background .18s, transform .14s, box-shadow .18s;
-  box-shadow: 0 4px 16px rgba(250,15,0,.28);
-  -webkit-tap-highlight-color: transparent;
-  touch-action: manipulation;
-}
-.btn-submit:hover {
-  background: var(--red2); transform: translateY(-2px);
-  box-shadow: 0 8px 24px rgba(250,15,0,.36);
-}
-.btn-submit:active { transform: translateY(0); }
-.btn-submit:disabled {
-  background: var(--ink40); cursor: not-allowed;
-  box-shadow: none; transform: none;
-}
-.btn-submit svg { width: 15px; height: 15px; }
-
-/* ── ADMIN ── */
-.admin-zone {
-  margin-top: 20px; overflow: hidden;
-  height: 0; opacity: 0; pointer-events: none; transition: opacity .3s;
-}
-.admin-zone.open { height: auto; opacity: 1; pointer-events: all; }
-.btn-admin {
-  display: inline-flex; align-items: center; gap: 7px;
-  background: transparent; color: var(--ink40);
-  font-family: var(--sans); font-size: 11px; font-weight: 600;
-  letter-spacing: .06em; text-transform: uppercase;
-  border: 1.5px solid var(--ink10); border-radius: 8px;
-  padding: 8px 15px; cursor: pointer; transition: all .15s;
-}
-.btn-admin:hover { border-color: var(--ink40); color: var(--ink); }
-.btn-admin svg { width: 13px; height: 13px; }
-
-/* ── SUCCESS OVERLAY ── */
-.success-veil {
-  display: none; position: fixed; inset: 0; z-index: 300;
-  background: rgba(245,245,247,.94);
-  -webkit-backdrop-filter: blur(20px);
-  backdrop-filter: blur(20px);
-  align-items: center; justify-content: center;
-  padding: 20px;
-}
-.success-veil.on { display: flex; }
-.success-card {
-  background: var(--white);
-  border: 1.5px solid var(--ink10);
-  border-radius: 22px; padding: 52px 48px;
-  text-align: center; max-width: 480px; width: 100%;
-  box-shadow: 0 32px 80px rgba(0,0,0,.1);
-  animation: popIn .5s cubic-bezier(.34,1.56,.64,1) both;
-}
-.success-icon {
-  width: 72px; height: 72px; border-radius: 50%;
-  background: linear-gradient(135deg,#00C851,#00A341);
-  display: grid; place-items: center;
-  margin: 0 auto 24px;
-  box-shadow: 0 8px 28px rgba(0,195,80,.22);
-  animation: popIn .6s .15s cubic-bezier(.34,1.56,.64,1) both;
-}
-.success-icon svg { width: 34px; height: 34px; color: white; }
-.success-h { font-family: var(--serif); font-size: 32px; font-weight: 400; margin-bottom: 10px; }
-.success-sub { font-size: 14px; color: var(--ink40); line-height: 1.6; margin-bottom: 6px; }
-.success-name {
-  display: block; font-family: var(--serif);
-  font-size: 20px; font-weight: 700;
-  color: var(--red); font-style: italic; margin-bottom: 22px;
-}
-.success-badge {
-  display: inline-flex; align-items: center; gap: 7px;
-  background: rgba(0,195,80,.07); border: 1px solid rgba(0,163,65,.2);
-  color: #00702F; font-size: 12.5px; font-weight: 700;
-  padding: 9px 18px; border-radius: 100px; margin-bottom: 24px;
-}
-.success-foot { font-size: 10.5px; color: var(--ink20); letter-spacing: .06em; text-transform: uppercase; }
-
-/* ── FOOTER ── */
-.site-footer {
-  position: relative; z-index: 1;
-  max-width: 860px; margin: 0 auto;
-  text-align: center; padding: 28px 40px 22px;
-  border-top: 1px solid var(--ink10);
-}
-.footer-brand {
-  display: inline-flex; align-items: center; gap: 7px;
-  font-size: 11.5px; color: var(--ink40); margin-bottom: 5px;
-}
-.footer-a-icon {
-  width: 18px; height: 18px; background: var(--red);
-  border-radius: 3px; display: flex; align-items: center; justify-content: center;
-}
-.footer-a-icon svg { width: 11px; height: 10px; }
-.footer-meta { font-size: 10.5px; color: var(--ink20); letter-spacing: .06em; }
-.admin-trigger {
-  display: inline-block; font-size: 12px; color: var(--ink10);
-  cursor: default; user-select: none; margin-top: 8px;
-  transition: color .3s;
-}
-.admin-trigger:hover { color: var(--ink40); }
-
-/* ── ANIMATIONS ── */
-@keyframes fadeUp {
-  from { opacity: 0; transform: translateY(20px); }
-  to   { opacity: 1; transform: translateY(0); }
-}
-@keyframes popIn {
-  from { opacity: 0; transform: scale(.86); }
-  to   { opacity: 1; transform: scale(1); }
-}
-
-/* ── MOBILE ── */
-@media (max-width: 640px) {
-  .hdr { padding: 0 18px; }
-  .hero { padding: 40px 18px 32px; flex-direction: column; align-items: flex-start; gap: 20px; }
-  .hero-stat { border-left: none; border-top: 3px solid var(--red); padding: 14px 0 0; }
-  .wrap { padding: 0 18px 64px; }
-  .q-card { padding: 22px 18px 18px; }
-  .submit-area { flex-direction: column; align-items: stretch; }
-  .btn-submit { width: 100%; justify-content: center; padding: 16px; }
-  .success-card { padding: 38px 24px; }
-}
+  /* RESPONSIVE */
+  @media (max-width: 600px) {
+    .container { padding: 28px 16px 60px; }
+    .site-header { padding: 0 18px; }
+    .question-card { padding: 24px 18px; }
+    .name-card { padding: 22px 18px; }
+    .success-box { padding: 38px 24px; }
+    .topic-grid { grid-template-columns: repeat(2, 1fr); }
+    .cyber-row { grid-template-columns: 1fr; }
+    .quiz-title { font-size: 28px; }
+  }
 </style>
 </head>
 <body>
 
 <!-- HEADER -->
-<header class="hdr">
-  <div class="adobe-logo-wrap">
-    <div class="adobe-logo-icon">
+<header class="site-header">
+  <div class="adobe-logo">
+    <div class="adobe-logo-mark">
       <!--
-        Adobe "A" logo — two triangles forming the A mark.
-        Left triangle: solid white.  Right triangle: white at 55% opacity.
-        This exactly matches the real Adobe logo geometry.
+        Adobe "A" mark — two triangles on red, matching the official logo exactly.
+        Left triangle: solid white. Right triangle: white at 55% opacity.
+        Crossbar: punched out to show the red background.
       -->
-      <svg viewBox="0 0 38 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <!-- Left A triangle -->
-        <path d="M0 32L13.5 0H23V32H0Z" fill="white"/>
-        <!-- Right A triangle -->
-        <path d="M38 32L24.5 0H15V32H38Z" fill="white" opacity="0.55"/>
-        <!-- Inner crossbar cutout -->
-        <path d="M13.5 19.5H24.5L23 23.5H15L13.5 19.5Z" fill="#FA0F00"/>
+      <svg viewBox="0 0 48 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M0 40L16 0H27V40H0Z" fill="white"/>
+        <path d="M48 40L32 0H21V40H48Z" fill="white" opacity="0.55"/>
+        <path d="M16 24H32L30 29H18L16 24Z" fill="#FA0F00"/>
       </svg>
     </div>
-    <span class="adobe-logo-name">Adobe</span>
+    <span class="adobe-logo-text">Adobe</span>
   </div>
-  <div class="hdr-divider"></div>
-  <span class="hdr-label">TGRC · AI Week 2026</span>
-  <div class="hdr-pill">Internal Only</div>
+  <span class="header-badge">AI Week 2026</span>
 </header>
 
-<!-- HERO -->
-<div class="hero">
-  <div class="hero-left">
-    <div class="hero-tag">
-      <span class="tag-dot"></span>
-      Knowledge Assessment · 2026
-    </div>
-    <h1 class="hero-h1">
-      Adobe<br>
-      <em>AI Week</em><br>
-      <strong>Quiz</strong>
-    </h1>
-    <p class="hero-desc">
-      Test your knowledge across AI fundamentals, agents, RAG,
-      vector databases, enterprise deployment, and critical cybersecurity concepts.
-    </p>
-  </div>
-  <div class="hero-stat">
-    <div class="stat-n">10</div>
-    <div class="stat-l">Questions</div>
-  </div>
-</div>
-
 <!-- MAIN -->
-<main class="wrap" id="quizMain">
+<main class="container" id="quizContainer">
 
-  <div class="sec-lbl">Participant Information</div>
+  <!-- HERO -->
+  <div class="quiz-hero">
+    <div class="quiz-eyebrow">Knowledge Check</div>
+    <h1 class="quiz-title">Adobe <span>AI Week</span> Quiz</h1>
+    <p class="quiz-subtitle">Test your foundational and intermediate AI knowledge across key topics</p>
+  </div>
+
+  <!-- INFOGRAPHIC STRIP -->
+  <div class="infographic-strip">
+    <div class="strip-label">10 Questions Across These Topics</div>
+
+    <!-- Core AI topics grid -->
+    <div class="topic-grid">
+      <div class="topic-card">
+        <span class="topic-icon">🧠</span>
+        <div class="topic-name">AI Fundamentals</div>
+        <div class="topic-count">1 question</div>
+      </div>
+      <div class="topic-card">
+        <span class="topic-icon">🤖</span>
+        <div class="topic-name">AI Agents</div>
+        <div class="topic-count">1 question</div>
+      </div>
+      <div class="topic-card">
+        <span class="topic-icon">🎯</span>
+        <div class="topic-name">Orchestrators</div>
+        <div class="topic-count">1 question</div>
+      </div>
+      <div class="topic-card">
+        <span class="topic-icon">📚</span>
+        <div class="topic-name">RAG</div>
+        <div class="topic-count">1 question</div>
+      </div>
+      <div class="topic-card">
+        <span class="topic-icon">🔍</span>
+        <div class="topic-name">Vector Databases</div>
+        <div class="topic-count">1 question</div>
+      </div>
+      <div class="topic-card">
+        <span class="topic-icon">🔧</span>
+        <div class="topic-name">Tools &amp; MCP</div>
+        <div class="topic-count">1 question</div>
+      </div>
+      <div class="topic-card">
+        <span class="topic-icon">💬</span>
+        <div class="topic-name">Prompting</div>
+        <div class="topic-count">1 question</div>
+      </div>
+      <div class="topic-card">
+        <span class="topic-icon">🏢</span>
+        <div class="topic-name">AI in Enterprise</div>
+        <div class="topic-count">1 question</div>
+      </div>
+    </div>
+
+    <!-- Cybersecurity mandatory highlight -->
+    <div class="cyber-row">
+      <div class="cyber-card">
+        <div class="cyber-icon">💉</div>
+        <div class="cyber-info">
+          <div class="cyber-title">Prompt Injection</div>
+          <div class="cyber-sub">Hijacking AI model behaviour via malicious inputs</div>
+          <div class="cyber-badge">Cybersecurity · Mandatory</div>
+        </div>
+      </div>
+      <div class="cyber-card">
+        <div class="cyber-icon">🔓</div>
+        <div class="cyber-info">
+          <div class="cyber-title">Data Leakage Risks</div>
+          <div class="cyber-sub">Sensitive data exposure through LLM responses</div>
+          <div class="cyber-badge">Cybersecurity · Mandatory</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- NAME INPUT -->
   <div class="name-card">
-    <label class="name-lbl" for="pName">Full Name <span>*</span></label>
-    <input type="text" id="pName" class="name-inp"
-           placeholder="Your name here…"
-           autocomplete="name" maxlength="80"
-           autocorrect="off" autocapitalize="words" spellcheck="false"/>
+    <label for="participantName">Your Full Name <span>*</span></label>
+    <input type="text" id="participantName" class="name-input" placeholder="Enter your name to begin..." autocomplete="name" maxlength="80" autocorrect="off" autocapitalize="words" spellcheck="false"/>
+    <div class="name-underline"></div>
   </div>
 
-  <div class="prog-wrap">
-    <div class="prog-top">
-      <span class="prog-lbl">Progress</span>
-      <span class="prog-num" id="progNum">0 / 10</span>
+  <!-- PROGRESS -->
+  <div class="progress-bar-wrap">
+    <div class="progress-meta">
+      <span class="progress-label">Progress</span>
+      <span class="progress-count" id="progressCount">0 / 10 answered</span>
     </div>
-    <div class="prog-track">
-      <div class="prog-fill" id="progFill"></div>
-    </div>
+    <div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
   </div>
 
-  <div id="qWrap"></div>
+  <!-- QUESTIONS -->
+  <div id="questionsContainer"></div>
 
-  <div class="val-alert" id="valAlert">
-    ⚠️  Please enter your full name and answer all 10 questions before submitting.
-  </div>
+  <!-- VALIDATION -->
+  <div class="validation-msg" id="validationMsg">⚠️ Please enter your name and answer all questions before submitting.</div>
 
-  <div class="submit-area">
-    <div class="submit-note">
-      All fields required.
-      <strong>Responses are not scored live</strong> —
-      results will be reviewed by the TGRC team after the session.
-    </div>
+  <!-- SUBMIT -->
+  <div class="submit-section">
+    <p class="submit-hint">All fields are required. <strong>Answers are not scored live.</strong></p>
     <button class="btn-submit" id="submitBtn" onclick="handleSubmit()">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
-           stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-        <path d="M22 2L11 13M22 2L15 22 11 13 2 9l20-7z"/>
-      </svg>
-      Submit
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 2L11 13M22 2L15 22 11 13 2 9l20-7z"/></svg>
+      Submit Responses
     </button>
   </div>
 
-  <div class="admin-zone" id="adminZone">
-    <button class="btn-admin" onclick="exportResults()">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
-           stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-        <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M7 10l5 5 5-5M12 15V3"/>
-      </svg>
-      Export All Results · Admin
+  <!-- ADMIN -->
+  <div class="admin-section" id="adminSection">
+    <button class="btn-download" onclick="downloadResults()">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>
+      Download All Results (Admin)
     </button>
   </div>
 
 </main>
 
 <!-- SUCCESS OVERLAY -->
-<div class="success-veil" id="successVeil">
-  <div class="success-card">
+<div class="success-overlay" id="successOverlay">
+  <div class="success-box">
     <div class="success-icon">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
-           stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
-        <polyline points="20 6 9 17 4 12"/>
-      </svg>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
     </div>
-    <h2 class="success-h">All done!</h2>
-    <p class="success-sub">Thank you for participating,</p>
+    <h2 class="success-title">You're all done!</h2>
+    <p class="success-msg">Thank you for participating,</p>
     <span class="success-name" id="successName"></span>
-    <div class="success-badge">
-      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-           stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-        <polyline points="20 6 9 17 4 12"/>
-      </svg>
-      Responses recorded
-    </div>
-    <p class="success-foot">Adobe TGRC · AI Week 2026 · Internal</p>
+    <p class="success-msg">✅ Your responses have been recorded.</p>
+    <br>
+    <p class="success-footer">Results will be reviewed by the AI Week team · Adobe TGRC · Internal</p>
   </div>
 </div>
 
 <!-- FOOTER -->
 <footer class="site-footer">
-  <div class="footer-brand">
-    <div class="footer-a-icon">
-      <svg viewBox="0 0 38 32" fill="none">
-        <path d="M0 32L13.5 0H23V32H0Z" fill="white"/>
-        <path d="M38 32L24.5 0H15V32H38Z" fill="white" opacity="0.55"/>
-      </svg>
-    </div>
-    Adobe TGRC · AI Week 2026
-  </div>
-  <div class="footer-meta">CONFIDENTIAL · INTERNAL USE ONLY</div>
-  <br>
-  <span class="admin-trigger" id="adminTrigger">· · ·</span>
+  <div class="footer-divider"></div>
+  <p class="footer-text">Adobe AI Week · Internal Use Only · 2026</p>
+  <span class="admin-trigger" id="adminTrigger" title="">···</span>
 </footer>
 
 <script>
-// ═══════════════════════════════════════════════════════════════
-//  QUIZ DATA
-// ═══════════════════════════════════════════════════════════════
-const QS = [
-  { id:"q1",  tag:"AI Fundamentals",
-    text:"Which of the following best describes a Large Language Model (LLM)?",
-    opts:["A rule-based system that follows explicit if-then logic to generate text",
-          "A deep learning model trained on massive text corpora to predict and generate language",
-          "A database that stores and retrieves pre-written responses to user queries",
-          "A search engine that ranks web pages based on keyword relevance"], ans:"B" },
-  { id:"q2",  tag:"AI Agents",
-    text:"What fundamentally distinguishes an AI Agent from a standard LLM chatbot?",
-    opts:["An AI Agent uses a larger language model with more parameters",
-          "An AI Agent can only process images, not text",
-          "An AI Agent can autonomously plan, take actions, use tools, and pursue goals over multiple steps",
-          "An AI Agent requires no human oversight or intervention"], ans:"C" },
-  { id:"q3",  tag:"Orchestrators",
-    text:"In a multi-agent AI system, what is the primary role of an Orchestrator?",
-    opts:["To store and index vector embeddings for semantic search",
-          "To coordinate and direct multiple specialized agents toward completing a complex task",
-          "To fine-tune the base LLM on domain-specific data",
-          "To enforce rate limits and manage API quotas"], ans:"B" },
-  { id:"q4",  tag:"RAG",
-    text:"Retrieval-Augmented Generation (RAG) primarily addresses which LLM limitation?",
-    opts:["The inability of LLMs to process multilingual inputs",
-          "The high computational cost of running inference at scale",
-          "Knowledge cutoff and hallucination issues by grounding responses in retrieved documents",
-          "The lack of code-generation capabilities in foundational models"], ans:"C" },
-  { id:"q5",  tag:"Vector Databases",
-    text:"How does a vector database differ from a traditional relational database in AI applications?",
-    opts:["Vector databases use SQL while relational databases use natural language queries",
-          "Vector databases store high-dimensional embeddings enabling semantic similarity search, unlike row-column relational storage",
-          "Vector databases are exclusively used for storing images and multimedia",
-          "Vector databases require no indexing, making them faster for all query types"], ans:"B" },
-  { id:"q6",  tag:"Tools & MCP",
-    text:"What does MCP (Model Context Protocol) primarily enable in AI systems?",
-    opts:["A standardized way to fine-tune models on proprietary enterprise data",
-          "A protocol for compressing large model weights for edge deployment",
-          "A standardized interface for AI models to discover and invoke external tools, APIs, and data sources",
-          "A method for encrypting LLM API keys and service credentials"], ans:"C" },
-  { id:"q7",  tag:"Prompting",
-    text:"Which prompting technique provides worked examples within the prompt itself to guide the model's output format?",
-    opts:["Zero-shot prompting","Few-shot prompting","Chain-of-thought prompting","Retrieval-augmented prompting"], ans:"B" },
-  { id:"q8",  tag:"AI in Enterprise",
-    text:"When deploying an LLM in an enterprise setting, which governance concern is most critical?",
-    opts:["Ensuring the model uses the newest GPU architecture available",
-          "Maximizing context window size to handle all document lengths",
-          "Establishing data classification, access controls, and audit trails for model inputs and outputs",
-          "Selecting the model with the highest score on public benchmarks"], ans:"C" },
-  { id:"q9",  tag:"AI + Cybersecurity",
-    text:"What is a prompt injection attack in the context of AI systems?",
-    opts:["Flooding an AI API with rapid requests to cause a denial-of-service condition",
-          "Injecting malicious instructions into user input to hijack the AI model's behavior or override system prompts",
-          "Using SQL injection techniques to corrupt the vector database backing an AI application",
-          "Intercepting network traffic between an LLM and its API gateway"], ans:"B" },
-  { id:"q10", tag:"AI + Cybersecurity",
-    text:"Which scenario best represents a data leakage risk specific to LLM-based enterprise applications?",
-    opts:["A developer uses a public benchmark dataset to evaluate model performance",
-          "An employee queries an internal LLM that inadvertently exposes confidential HR or financial records in its responses",
-          "An AI model generates code referencing a deprecated library version",
-          "A model returns a factually incorrect answer about a competitor's product"], ans:"B" },
+const QUESTIONS=[
+  {id:"q1",tag:"AI Fundamentals",text:"Which of the following best describes a Large Language Model (LLM)?",options:["A rule-based system that follows explicit if-then logic to generate text","A deep learning model trained on large text corpora to predict and generate language","A database that stores and retrieves pre-written responses to user queries","A search engine that ranks web pages based on keyword relevance"],answer:"B"},
+  {id:"q2",tag:"AI Agents",text:"What distinguishes an AI Agent from a standard LLM chatbot?",options:["An AI Agent uses a larger language model with more parameters","An AI Agent can only process images, not text","An AI Agent can autonomously plan, take actions, use tools, and pursue goals over multiple steps","An AI Agent requires no human oversight or intervention"],answer:"C"},
+  {id:"q3",tag:"Orchestrators",text:"In a multi-agent AI system, what is the primary role of an Orchestrator?",options:["To store and index vector embeddings for semantic search","To coordinate and direct multiple specialized agents toward completing a complex task","To fine-tune the base LLM on domain-specific data","To enforce rate limits and manage API quotas across services"],answer:"B"},
+  {id:"q4",tag:"RAG",text:"Retrieval-Augmented Generation (RAG) primarily addresses which LLM limitation?",options:["The inability of LLMs to process multilingual inputs","The high computational cost of running inference at scale","The knowledge cutoff and hallucination issues by grounding responses in retrieved documents","The lack of code-generation capabilities in foundational models"],answer:"C"},
+  {id:"q5",tag:"Vector Databases",text:"How does a vector database differ from a traditional relational database in the context of AI applications?",options:["Vector databases use SQL queries while relational databases use natural language","Vector databases store high-dimensional embeddings and support semantic similarity search, unlike row-column relational storage","Vector databases are exclusively used for storing images and multimedia assets","Vector databases require no indexing, making them faster for all types of queries"],answer:"B"},
+  {id:"q6",tag:"Tools & MCP",text:"What does MCP (Model Context Protocol) primarily enable in AI systems?",options:["A standardized way to fine-tune models on proprietary enterprise data","A protocol for compressing large model weights for edge deployment","A standardized interface for AI models to discover and use external tools, APIs, and data sources","A method for encrypting LLM API keys and credentials"],answer:"C"},
+  {id:"q7",tag:"Prompting",text:"Which prompting technique involves providing the model with worked examples within the prompt itself to guide its output format?",options:["Zero-shot prompting","Few-shot prompting","Chain-of-thought prompting","Retrieval-augmented prompting"],answer:"B"},
+  {id:"q8",tag:"AI in Enterprise",text:"When deploying an LLM in an enterprise setting, which governance concern is most critical?",options:["Ensuring the model uses the newest GPU architecture available","Maximizing the context window size to handle all document lengths","Establishing data classification, access controls, and audit trails for model inputs and outputs","Selecting the model with the highest score on public benchmarks"],answer:"C"},
+  {id:"q9",tag:"AI + Cybersecurity",text:"What is a prompt injection attack in the context of AI systems?",options:["Flooding an AI API with rapid requests to cause a denial-of-service condition","Injecting malicious or manipulative instructions into user input to hijack the AI model's behavior or override system prompts","Using SQL injection techniques to corrupt the vector database backing an AI application","Intercepting network traffic between the LLM and its API gateway"],answer:"B"},
+  {id:"q10",tag:"AI + Cybersecurity",text:"Which scenario represents a data leakage risk specific to LLM-based enterprise applications?",options:["A developer uses a public benchmark dataset to evaluate model performance","An employee queries an internal LLM that has been inadvertently trained on or has access to confidential HR records, causing sensitive data to appear in responses","An AI model generates code with a deprecated library version","A model returns a factually incorrect answer about a competitor's product"],answer:"B"}
 ];
+const ANSWER_KEY=QUESTIONS.reduce((a,q)=>{a[q.id]=q.answer;return a;},{});
 
-// Internal answer key — never shown in UI
-const KEY = QS.reduce((a,q) => { a[q.id] = q.ans; return a; }, {});
-const LETTERS = ['A','B','C','D'];
+// Unique key per page load — no overlap between submissions
+const SESSION_KEY='adobe_ai_quiz_2026_'+Date.now()+'_'+Math.random().toString(36).slice(2,8);
+const INDEX_KEY='adobe_ai_quiz_2026_index';
 
-// ═══════════════════════════════════════════════════════════════
-//  STORAGE — each session gets a UNIQUE key, no overlap
-//  Key format:  adobe_ai_quiz_2026_<ISO timestamp on page load>
-// ═══════════════════════════════════════════════════════════════
-// Generate a unique session key when the page loads
-const SESSION_KEY = 'adobe_ai_quiz_2026_session_' + Date.now();
-// Master index key — list of all session keys for export
-const INDEX_KEY   = 'adobe_ai_quiz_2026_index';
-
-function saveSubmission(sub) {
-  try {
-    // Save this submission under its own unique session key
-    localStorage.setItem(SESSION_KEY, JSON.stringify(sub));
-    // Add session key to the master index
-    const index = JSON.parse(localStorage.getItem(INDEX_KEY) || '[]');
-    if (!index.includes(SESSION_KEY)) index.push(SESSION_KEY);
-    localStorage.setItem(INDEX_KEY, JSON.stringify(index));
-  } catch(e) {
-    console.warn('Storage error:', e);
-  }
+function saveSubmission(sub){
+  try{
+    localStorage.setItem(SESSION_KEY,JSON.stringify(sub));
+    const idx=JSON.parse(localStorage.getItem(INDEX_KEY)||'[]');
+    if(!idx.includes(SESSION_KEY))idx.push(SESSION_KEY);
+    localStorage.setItem(INDEX_KEY,JSON.stringify(idx));
+  }catch(e){console.warn('Storage:',e);}
+}
+function getAllSubmissions(){
+  try{
+    const idx=JSON.parse(localStorage.getItem(INDEX_KEY)||'[]');
+    return idx.map(k=>{try{return JSON.parse(localStorage.getItem(k)||'null');}catch(e){return null;}}).filter(Boolean);
+  }catch(e){return[];}
 }
 
-function getAllSubmissions() {
-  try {
-    const index = JSON.parse(localStorage.getItem(INDEX_KEY) || '[]');
-    return index
-      .map(k => { try { return JSON.parse(localStorage.getItem(k) || 'null'); } catch(e) { return null; } })
-      .filter(Boolean);
-  } catch(e) { return []; }
-}
-
-// ═══════════════════════════════════════════════════════════════
-//  RENDER QUESTIONS
-// ═══════════════════════════════════════════════════════════════
-function render() {
-  const wrap = document.getElementById('qWrap');
-  wrap.innerHTML = '';
-  QS.forEach((q, i) => {
-    const card = document.createElement('div');
-    card.className = 'q-card';
-    card.id = 'card_' + q.id;
-    card.style.animationDelay = (i * 0.04 + 0.12) + 's';
-    card.innerHTML = `
-      <div class="q-bar"></div>
-      <div class="q-meta">
-        <span class="q-num">Q${String(i+1).padStart(2,'0')}</span>
-        <span class="q-tag">${q.tag}</span>
-        <div class="q-tick">
-          <svg viewBox="0 0 24 24" fill="none" stroke="transparent"
-               stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
-            <polyline points="20 6 9 17 4 12"/>
-          </svg>
-        </div>
-      </div>
-      <p class="q-text">${q.text}</p>
-      <div class="opts">
-        ${q.opts.map((o,j) => {
-          const l = LETTERS[j];
-          return `<label class="opt" for="${q.id}_${l}">
-            <input type="radio" name="${q.id}" id="${q.id}_${l}"
-                   value="${l}" onchange="onPick('${q.id}')">
-            <span class="opt-dot"></span>
-            <span class="opt-l">${l}</span>
-            <span class="opt-txt">${o}</span>
-          </label>`;
-        }).join('')}
-      </div>`;
-    wrap.appendChild(card);
+function renderQuestions(){
+  const c=document.getElementById('questionsContainer');
+  c.innerHTML='';
+  QUESTIONS.forEach((q,i)=>{
+    const card=document.createElement('div');
+    card.className='question-card';card.id=`card_${q.id}`;
+    card.style.animationDelay=`${0.05*i+0.2}s`;
+    const opts=q.options.map((o,j)=>{
+      const l=['A','B','C','D'][j];
+      return `<label class="option-label" for="${q.id}_${l}"><input type="radio" name="${q.id}" id="${q.id}_${l}" value="${l}" onchange="onAnswerChange('${q.id}')"/><span class="option-dot"></span><span class="option-letter">${l}</span><span class="option-text">${o}</span></label>`;
+    }).join('');
+    card.innerHTML=`<div class="question-header"><div class="q-number">${String(i+1).padStart(2,'0')}</div><p class="q-text">${q.text}</p></div><div class="options-grid">${opts}</div><div style="margin-top:12px;display:flex;justify-content:flex-end"><span class="q-tag">${q.tag}</span></div>`;
+    c.appendChild(card);
   });
 }
+function onAnswerChange(id){document.getElementById(`card_${id}`).classList.add('answered');updateProgress();}
+function updateProgress(){
+  const n=QUESTIONS.filter(q=>document.querySelector(`input[name="${q.id}"]:checked`)).length;
+  document.getElementById('progressCount').textContent=`${n} / ${QUESTIONS.length} answered`;
+  document.getElementById('progressFill').style.width=`${n/QUESTIONS.length*100}%`;
+}
+function collectAnswers(){return QUESTIONS.reduce((a,q)=>{const s=document.querySelector(`input[name="${q.id}"]:checked`);a[q.id]=s?s.value:null;return a;},{});}
 
-function onPick(id) {
-  document.getElementById('card_' + id).classList.add('done');
-  updateProgress();
+function handleSubmit(){
+  const name=document.getElementById('participantName').value.trim();
+  const answers=collectAnswers();
+  const allDone=Object.values(answers).every(a=>a!==null);
+  const vm=document.getElementById('validationMsg');
+  if(!name||!allDone){vm.classList.add('show');vm.scrollIntoView({behavior:'smooth',block:'center'});return;}
+  vm.classList.remove('show');
+  const correct=QUESTIONS.filter(q=>answers[q.id]===ANSWER_KEY[q.id]).length;
+  saveSubmission({name,timestamp:new Date().toISOString(),session_key:SESSION_KEY,answers,_meta:{total:QUESTIONS.length,correct,incorrect:QUESTIONS.length-correct}});
+  document.getElementById('submitBtn').disabled=true;
+  document.querySelectorAll('input[type="radio"],.name-input').forEach(el=>el.disabled=true);
+  document.getElementById('successName').textContent=name;
+  const ov=document.getElementById('successOverlay');ov.classList.add('show');ov.style.display='flex';
 }
 
-function updateProgress() {
-  const answered = QS.filter(q => document.querySelector(`input[name="${q.id}"]:checked`)).length;
-  document.getElementById('progNum').textContent = `${answered} / ${QS.length}`;
-  const fill = document.getElementById('progFill');
-  fill.style.width = (answered / QS.length * 100) + '%';
-  answered > 0 ? fill.classList.add('live') : fill.classList.remove('live');
-}
-
-function collectAnswers() {
-  return QS.reduce((a, q) => {
-    const sel = document.querySelector(`input[name="${q.id}"]:checked`);
-    a[q.id] = sel ? sel.value : null;
-    return a;
-  }, {});
-}
-
-// ═══════════════════════════════════════════════════════════════
-//  SUBMIT
-// ═══════════════════════════════════════════════════════════════
-function handleSubmit() {
-  const name    = document.getElementById('pName').value.trim();
-  const answers = collectAnswers();
-  const allDone = Object.values(answers).every(v => v !== null);
-  const alert   = document.getElementById('valAlert');
-
-  if (!name || !allDone) {
-    alert.classList.add('on');
-    alert.scrollIntoView({ behavior: 'smooth', block: 'center' });
-    return;
-  }
-  alert.classList.remove('on');
-
-  // Score internally — NOT shown to user
-  const correct = QS.filter(q => answers[q.id] === KEY[q.id]).length;
-
-  const submission = {
-    name,
-    timestamp: new Date().toISOString(),
-    session_key: SESSION_KEY,
-    answers,
-    _meta: { total: QS.length, correct, incorrect: QS.length - correct }
-  };
-
-  saveSubmission(submission);
-
-  // Lock the form
-  document.getElementById('submitBtn').disabled = true;
-  document.querySelectorAll('input[type="radio"], .name-inp').forEach(el => el.disabled = true);
-
-  // Show success
-  document.getElementById('successName').textContent = name;
-  const veil = document.getElementById('successVeil');
-  veil.classList.add('on');
-  veil.style.display = 'flex';
-}
-
-// ═══════════════════════════════════════════════════════════════
-//  ADMIN EXPORT — triple-click · · · in footer
-// ═══════════════════════════════════════════════════════════════
-let adminTaps = 0, adminTimer = null;
-document.getElementById('adminTrigger').addEventListener('click', () => {
-  adminTaps++;
-  clearTimeout(adminTimer);
-  adminTimer = setTimeout(() => adminTaps = 0, 1400);
-  if (adminTaps >= 3) {
-    document.getElementById('adminZone').classList.toggle('open');
-    adminTaps = 0;
-  }
+let acc=0,at=null;
+document.getElementById('adminTrigger').addEventListener('click',()=>{
+  acc++;clearTimeout(at);at=setTimeout(()=>acc=0,1200);
+  if(acc>=3){document.getElementById('adminSection').classList.toggle('visible');acc=0;}
 });
-
-function exportResults() {
-  try {
-    const data = getAllSubmissions();
-    if (data.length === 0) { alert('No submissions found yet.'); return; }
-    const json = JSON.stringify(data, null, 2);
-    const blob = new Blob([json], { type: 'application/json' });
-    const url  = URL.createObjectURL(blob);
-    const a    = document.createElement('a');
-    a.href = url;
-    a.download = `adobe_ai_quiz_2026_results_${new Date().toISOString().slice(0,10)}.json`;
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-    URL.revokeObjectURL(url);
-  } catch(e) {
-    alert('Export failed: ' + e.message);
-  }
+function downloadResults(){
+  try{
+    const data=getAllSubmissions();
+    if(!data.length){alert('No submissions yet.');return;}
+    const blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'});
+    const url=URL.createObjectURL(blob);const a=document.createElement('a');
+    a.href=url;a.download=`adobe_ai_quiz_2026_results_${new Date().toISOString().slice(0,10)}.json`;
+    document.body.appendChild(a);a.click();document.body.removeChild(a);URL.revokeObjectURL(url);
+  }catch(e){alert('Download failed: '+e.message);}
 }
-
-// ═══════════════════════════════════════════════════════════════
-//  INIT
-// ═══════════════════════════════════════════════════════════════
-render();
-updateProgress();
+renderQuestions();updateProgress();
 </script>
 </body>
 </html>
