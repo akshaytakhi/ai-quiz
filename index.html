@@ -303,13 +303,7 @@
     </button>
   </div>
 
-  <!-- ADMIN -->
-  <div class="admin-section" id="adminSection">
-    <button class="btn-download" onclick="downloadResults()">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>
-      Download All Results (Admin)
-    </button>
-  </div>
+  <!-- No admin download needed — all responses go directly to Google Sheet -->
 
 </main>
 
@@ -332,7 +326,7 @@
 <footer class="site-footer">
   <div class="footer-divider"></div>
   <p class="footer-text">Adobe AI Week · Internal Use Only · 2026</p>
-  <span class="admin-trigger" id="adminTrigger" title="">···</span>
+  <span style="font-size:11px;color:var(--ink-10)">Responses saved to Google Sheets</span>
 </footer>
 
 <script>
@@ -348,81 +342,134 @@ const QUESTIONS=[
   {id:"q9",tag:"AI + Cybersecurity",text:"What is a prompt injection attack in the context of AI systems?",options:["Flooding an AI API with rapid requests to cause a denial-of-service condition","Injecting malicious or manipulative instructions into user input to hijack the AI model's behavior or override system prompts","Using SQL injection techniques to corrupt the vector database backing an AI application","Intercepting network traffic between the LLM and its API gateway"],answer:"B"},
   {id:"q10",tag:"AI + Cybersecurity",text:"Which scenario represents a data leakage risk specific to LLM-based enterprise applications?",options:["A developer uses a public benchmark dataset to evaluate model performance","An employee queries an internal LLM that has been inadvertently trained on or has access to confidential HR records, causing sensitive data to appear in responses","An AI model generates code with a deprecated library version","A model returns a factually incorrect answer about a competitor's product"],answer:"B"}
 ];
-const ANSWER_KEY=QUESTIONS.reduce((a,q)=>{a[q.id]=q.answer;return a;},{});
+const ANSWER_KEY = QUESTIONS.reduce((a,q)=>{ a[q.id]=q.answer; return a; },{});
 
-// Unique key per page load — no overlap between submissions
-const SESSION_KEY='adobe_ai_quiz_2026_'+Date.now()+'_'+Math.random().toString(36).slice(2,8);
-const INDEX_KEY='adobe_ai_quiz_2026_index';
+// ═══════════════════════════════════════════════════════════════════
+//  GOOGLE SHEET WEBHOOK
+//  Every submission is POSTed directly to Google Sheets in real-time.
+//  No localStorage, no JSON files — works from any device, any browser.
+// ═══════════════════════════════════════════════════════════════════
+const WEBHOOK_URL = 'https://script.google.com/macros/s/AKfycbxnKgb0D6ZE99LaJFPEeaHUzq9O7553d-XdnCr9zYY44PEPnXcMVGeDt3ZSJwU1ReMp/exec';
 
-function saveSubmission(sub){
-  try{
-    localStorage.setItem(SESSION_KEY,JSON.stringify(sub));
-    const idx=JSON.parse(localStorage.getItem(INDEX_KEY)||'[]');
-    if(!idx.includes(SESSION_KEY))idx.push(SESSION_KEY);
-    localStorage.setItem(INDEX_KEY,JSON.stringify(idx));
-  }catch(e){console.warn('Storage:',e);}
+async function sendToSheet(payload) {
+  /*
+   * ── WHY THIS WORKS ──────────────────────────────────────────────────
+   * Google Apps Script (GAS) does not send CORS headers, so the browser
+   * blocks any fetch() that reads the response. We use mode:'no-cors'
+   * to fire-and-forget — but no-cors ONLY allows "simple" request headers.
+   *
+   * ❌ BROKEN:  Content-Type: application/json  → NOT a simple header
+   *             Browser silently drops the body. GAS gets nothing.
+   *
+   * ✅ FIXED:   Send as URLSearchParams (application/x-www-form-urlencoded)
+   *             This IS a simple header. Body is always received by GAS.
+   *             In GAS, read with:  e.parameter.data  →  JSON.parse(it)
+   * ───────────────────────────────────────────────────────────────────
+   */
+  try {
+    const form = new URLSearchParams();
+    form.append('data', JSON.stringify(payload));   // GAS reads: e.parameter.data
+
+    await fetch(WEBHOOK_URL, {
+      method: 'POST',
+      mode:   'no-cors',   // required — GAS has no CORS headers
+      body:   form         // URLSearchParams → simple header → body always delivered
+    });
+    console.log('✅ Sent to Google Sheet:', payload.name);
+    return true;
+  } catch(err) {
+    console.error('❌ Webhook error:', err);
+    return false;
+  }
 }
-function getAllSubmissions(){
-  try{
-    const idx=JSON.parse(localStorage.getItem(INDEX_KEY)||'[]');
-    return idx.map(k=>{try{return JSON.parse(localStorage.getItem(k)||'null');}catch(e){return null;}}).filter(Boolean);
-  }catch(e){return[];}
-}
 
+// ── RENDER ──────────────────────────────────────────────────────────
 function renderQuestions(){
-  const c=document.getElementById('questionsContainer');
-  c.innerHTML='';
+  const c = document.getElementById('questionsContainer');
+  c.innerHTML = '';
   QUESTIONS.forEach((q,i)=>{
-    const card=document.createElement('div');
-    card.className='question-card';card.id=`card_${q.id}`;
-    card.style.animationDelay=`${0.05*i+0.2}s`;
-    const opts=q.options.map((o,j)=>{
-      const l=['A','B','C','D'][j];
-      return `<label class="option-label" for="${q.id}_${l}"><input type="radio" name="${q.id}" id="${q.id}_${l}" value="${l}" onchange="onAnswerChange('${q.id}')"/><span class="option-dot"></span><span class="option-letter">${l}</span><span class="option-text">${o}</span></label>`;
+    const card = document.createElement('div');
+    card.className = 'question-card';
+    card.id = `card_${q.id}`;
+    card.style.animationDelay = `${0.05*i+0.2}s`;
+    const opts = q.options.map((o,j)=>{
+      const l = ['A','B','C','D'][j];
+      return `<label class="option-label" for="${q.id}_${l}">
+        <input type="radio" name="${q.id}" id="${q.id}_${l}" value="${l}" onchange="onAnswerChange('${q.id}')"/>
+        <span class="option-dot"></span>
+        <span class="option-letter">${l}</span>
+        <span class="option-text">${o}</span>
+      </label>`;
     }).join('');
-    card.innerHTML=`<div class="question-header"><div class="q-number">${String(i+1).padStart(2,'0')}</div><p class="q-text">${q.text}</p></div><div class="options-grid">${opts}</div><div style="margin-top:12px;display:flex;justify-content:flex-end"><span class="q-tag">${q.tag}</span></div>`;
+    card.innerHTML = `
+      <div class="question-header">
+        <div class="q-number">${String(i+1).padStart(2,'0')}</div>
+        <p class="q-text">${q.text}</p>
+      </div>
+      <div class="options-grid">${opts}</div>
+      <div style="margin-top:12px;display:flex;justify-content:flex-end">
+        <span class="q-tag">${q.tag}</span>
+      </div>`;
     c.appendChild(card);
   });
 }
-function onAnswerChange(id){document.getElementById(`card_${id}`).classList.add('answered');updateProgress();}
+
+function onAnswerChange(id){
+  document.getElementById(`card_${id}`).classList.add('answered');
+  updateProgress();
+}
 function updateProgress(){
-  const n=QUESTIONS.filter(q=>document.querySelector(`input[name="${q.id}"]:checked`)).length;
-  document.getElementById('progressCount').textContent=`${n} / ${QUESTIONS.length} answered`;
-  document.getElementById('progressFill').style.width=`${n/QUESTIONS.length*100}%`;
+  const n = QUESTIONS.filter(q=>document.querySelector(`input[name="${q.id}"]:checked`)).length;
+  document.getElementById('progressCount').textContent = `${n} / ${QUESTIONS.length} answered`;
+  document.getElementById('progressFill').style.width = `${n/QUESTIONS.length*100}%`;
 }
-function collectAnswers(){return QUESTIONS.reduce((a,q)=>{const s=document.querySelector(`input[name="${q.id}"]:checked`);a[q.id]=s?s.value:null;return a;},{});}
+function collectAnswers(){
+  return QUESTIONS.reduce((a,q)=>{
+    const s = document.querySelector(`input[name="${q.id}"]:checked`);
+    a[q.id] = s ? s.value : null;
+    return a;
+  },{});
+}
 
-function handleSubmit(){
-  const name=document.getElementById('participantName').value.trim();
-  const answers=collectAnswers();
-  const allDone=Object.values(answers).every(a=>a!==null);
-  const vm=document.getElementById('validationMsg');
-  if(!name||!allDone){vm.classList.add('show');vm.scrollIntoView({behavior:'smooth',block:'center'});return;}
+// ── SUBMIT ──────────────────────────────────────────────────────────
+async function handleSubmit(){
+  const name    = document.getElementById('participantName').value.trim();
+  const answers = collectAnswers();
+  const allDone = Object.values(answers).every(a=>a!==null);
+  const vm      = document.getElementById('validationMsg');
+
+  if(!name || !allDone){
+    vm.classList.add('show');
+    vm.scrollIntoView({behavior:'smooth', block:'center'});
+    return;
+  }
   vm.classList.remove('show');
-  const correct=QUESTIONS.filter(q=>answers[q.id]===ANSWER_KEY[q.id]).length;
-  saveSubmission({name,timestamp:new Date().toISOString(),session_key:SESSION_KEY,answers,_meta:{total:QUESTIONS.length,correct,incorrect:QUESTIONS.length-correct}});
-  document.getElementById('submitBtn').disabled=true;
-  document.querySelectorAll('input[type="radio"],.name-input').forEach(el=>el.disabled=true);
-  document.getElementById('successName').textContent=name;
-  const ov=document.getElementById('successOverlay');ov.classList.add('show');ov.style.display='flex';
+
+  // Lock UI immediately so user can't double-submit
+  const btn = document.getElementById('submitBtn');
+  btn.disabled = true;
+  btn.innerHTML = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" width="18" height="18"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg> Sending…`;
+  document.querySelectorAll('input[type="radio"], .name-input').forEach(el=>el.disabled=true);
+
+  // Build payload — exactly what goes into the Google Sheet
+  const payload = {
+    name,
+    timestamp: new Date().toISOString(),
+    answers             // { q1: "B", q2: "C", ... }
+  };
+
+  // POST to Google Sheet (fire-and-forget with no-cors — always shows success to user)
+  await sendToSheet(payload);
+
+  // Show success overlay
+  document.getElementById('successName').textContent = name;
+  const ov = document.getElementById('successOverlay');
+  ov.classList.add('show');
+  ov.style.display = 'flex';
 }
 
-let acc=0,at=null;
-document.getElementById('adminTrigger').addEventListener('click',()=>{
-  acc++;clearTimeout(at);at=setTimeout(()=>acc=0,1200);
-  if(acc>=3){document.getElementById('adminSection').classList.toggle('visible');acc=0;}
-});
-function downloadResults(){
-  try{
-    const data=getAllSubmissions();
-    if(!data.length){alert('No submissions yet.');return;}
-    const blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'});
-    const url=URL.createObjectURL(blob);const a=document.createElement('a');
-    a.href=url;a.download=`adobe_ai_quiz_2026_results_${new Date().toISOString().slice(0,10)}.json`;
-    document.body.appendChild(a);a.click();document.body.removeChild(a);URL.revokeObjectURL(url);
-  }catch(e){alert('Download failed: '+e.message);}
-}
-renderQuestions();updateProgress();
+renderQuestions();
+updateProgress();
 </script>
 </body>
 </html>
