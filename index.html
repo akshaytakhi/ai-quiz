@@ -6,264 +6,676 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <title>Adobe AI Week 2026 · Knowledge Quiz</title>
 <style>
-  :root {
-    --adobe-red: #FA0F00;
-    --adobe-red-dark: #C40000;
-    --adobe-red-light: #FFF0EF;
-    --adobe-red-mid: #FFE0DE;
-    --ink: #1A1A2E;
-    --ink-60: #6B6B8A;
-    --ink-30: #B8B8CC;
-    --ink-10: #F2F2F7;
-    --white: #FFFFFF;
-    --card-shadow: 0 2px 12px rgba(26,26,46,0.08), 0 1px 3px rgba(26,26,46,0.06);
-    --radius: 16px;
-    --radius-sm: 10px;
-    --font-display: Georgia, 'Times New Roman', serif;
-    --font-body: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
-  }
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-  html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
-  body { font-family: var(--font-body); background: #F8F8FC; color: var(--ink); min-height: 100vh; overflow-x: hidden; }
-  body::before { content: ''; position: fixed; top: -200px; right: -200px; width: 600px; height: 600px; background: radial-gradient(circle, rgba(250,15,0,0.06) 0%, transparent 70%); pointer-events: none; z-index: 0; }
-  body::after { content: ''; position: fixed; bottom: -150px; left: -150px; width: 500px; height: 500px; background: radial-gradient(circle, rgba(250,15,0,0.04) 0%, transparent 70%); pointer-events: none; z-index: 0; }
+/* ── TYPEFACE ── Playfair Display (editorial serif) + system sans */
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&display=swap');
 
-  /* HEADER */
-  .site-header { background: var(--white); border-bottom: 1px solid rgba(26,26,46,0.07); padding: 0 40px; height: 64px; display: flex; align-items: center; position: sticky; top: 0; z-index: 100; box-shadow: 0 1px 0 rgba(26,26,46,0.05); }
-  .adobe-logo { display: flex; align-items: center; gap: 12px; }
-  .adobe-logo-mark { width: 38px; height: 38px; background: var(--adobe-red); border-radius: 6px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
-  .adobe-logo-mark svg { width: 24px; height: 20px; display: block; }
-  .adobe-logo-text { font-size: 15px; font-weight: 700; letter-spacing: 0.01em; color: var(--ink); }
-  .header-badge { margin-left: auto; background: var(--adobe-red-light); color: var(--adobe-red); font-size: 11px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; padding: 4px 12px; border-radius: 20px; border: 1px solid var(--adobe-red-mid); }
+:root {
+  --red:       #FA0F00;
+  --red-dark:  #C90D00;
+  --red-soft:  rgba(250,15,0,.06);
+  --red-mid:   rgba(250,15,0,.14);
+  --ink:       #0C0C14;
+  --ink-80:    #2A2A3E;
+  --ink-50:    #7A7A96;
+  --ink-20:    #CCCCD8;
+  --ink-08:    #EBEBF2;
+  --ink-04:    #F5F5FA;
+  --white:     #FFFFFF;
+  --serif:     'Playfair Display', Georgia, serif;
+  --sans:      -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+  --ease-out:  cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-back: cubic-bezier(0.34, 1.56, 0.64, 1);
+}
 
-  /* CONTAINER */
-  .container { max-width: 780px; margin: 0 auto; padding: 48px 24px 80px; position: relative; z-index: 1; }
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
 
-  /* HERO */
-  .quiz-hero { text-align: center; margin-bottom: 40px; animation: fadeUp 0.6s ease both; }
-  .quiz-eyebrow { display: inline-flex; align-items: center; gap: 6px; font-size: 12px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--adobe-red); margin-bottom: 16px; }
-  .quiz-eyebrow::before, .quiz-eyebrow::after { content: ''; display: block; width: 20px; height: 1px; background: var(--adobe-red); opacity: 0.4; }
-  .quiz-title { font-family: var(--font-display); font-size: clamp(30px, 5vw, 48px); font-weight: 400; color: var(--ink); line-height: 1.1; margin-bottom: 12px; letter-spacing: -0.02em; }
-  .quiz-title span { color: var(--adobe-red); font-style: italic; }
-  .quiz-subtitle { font-size: 16px; color: var(--ink-60); font-weight: 300; line-height: 1.5; max-width: 480px; margin: 0 auto; }
+body {
+  font-family: var(--sans);
+  background: #F4F4F8;
+  color: var(--ink);
+  min-height: 100vh;
+  overflow-x: hidden;
+}
 
-  /* INFOGRAPHIC STRIP */
-  .infographic-strip { margin-bottom: 40px; animation: fadeUp 0.6s 0.05s ease both; }
-  .strip-label { font-size: 10px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-30); text-align: center; margin-bottom: 16px; }
+/* ── BACKGROUND — subtle diagonal ruled lines ── */
+body::before {
+  content: '';
+  position: fixed; inset: 0;
+  background-image:
+    repeating-linear-gradient(
+      -45deg,
+      transparent,
+      transparent 40px,
+      rgba(250,15,0,.018) 40px,
+      rgba(250,15,0,.018) 41px
+    );
+  pointer-events: none; z-index: 0;
+}
 
-  .topic-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-bottom: 10px; }
-  .topic-card { background: var(--white); border: 1.5px solid var(--ink-10); border-radius: 14px; padding: 16px 12px 13px; text-align: center; box-shadow: 0 1px 4px rgba(26,26,46,0.05); transition: border-color 0.2s, box-shadow 0.2s, transform 0.18s; position: relative; overflow: hidden; cursor: default; }
-  .topic-card::after { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: var(--adobe-red); transform: scaleX(0); transition: transform 0.2s; transform-origin: left; }
-  .topic-card:hover { border-color: rgba(250,15,0,0.2); box-shadow: 0 4px 14px rgba(250,15,0,0.09); transform: translateY(-2px); }
-  .topic-card:hover::after { transform: scaleX(1); }
-  .topic-icon { font-size: 22px; line-height: 1; margin-bottom: 8px; display: block; }
-  .topic-name { font-size: 11px; font-weight: 700; color: var(--ink); line-height: 1.3; }
-  .topic-count { font-size: 9.5px; color: var(--ink-30); font-weight: 500; margin-top: 2px; }
+/* ── HEADER ── */
+.hdr {
+  position: sticky; top: 0; z-index: 200;
+  height: 60px;
+  background: rgba(12,12,20,.96);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  display: flex; align-items: center;
+  padding: 0 36px;
+  border-bottom: 1px solid rgba(255,255,255,.08);
+}
 
-  /* Cybersecurity row — dark theme, red accent */
-  .cyber-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-  .cyber-card { background: linear-gradient(135deg, #1A1A2E 0%, #252540 100%); border: 1.5px solid rgba(250,15,0,0.28); border-radius: 14px; padding: 15px 18px; display: flex; align-items: center; gap: 14px; box-shadow: 0 2px 10px rgba(26,26,46,0.14); transition: transform 0.18s, box-shadow 0.18s; cursor: default; }
-  .cyber-card:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(250,15,0,0.14); }
-  .cyber-icon { width: 38px; height: 38px; border-radius: 9px; background: rgba(250,15,0,0.14); border: 1px solid rgba(250,15,0,0.28); display: flex; align-items: center; justify-content: center; font-size: 17px; flex-shrink: 0; }
-  .cyber-info {}
-  .cyber-title { font-size: 12px; font-weight: 700; color: #fff; letter-spacing: 0.01em; line-height: 1.3; }
-  .cyber-sub { font-size: 10px; color: rgba(255,255,255,0.4); margin-top: 2px; line-height: 1.3; }
-  .cyber-badge { display: inline-block; font-size: 9px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; background: rgba(250,15,0,0.2); color: rgba(250,15,0,0.9); padding: 1px 6px; border-radius: 4px; margin-top: 4px; }
+.hdr-logo { display: flex; align-items: center; gap: 10px; }
+.hdr-a {
+  width: 34px; height: 34px;
+  background: var(--red);
+  border-radius: 5px;
+  display: grid; place-items: center;
+  flex-shrink: 0;
+}
+.hdr-a svg { width: 21px; height: 18px; display: block; }
+.hdr-brand { font-size: 14px; font-weight: 700; color: #fff; letter-spacing: .01em; }
 
-  /* NAME CARD */
-  .name-card { background: var(--white); border-radius: var(--radius); padding: 28px 32px; box-shadow: var(--card-shadow); margin-bottom: 32px; border: 1.5px solid transparent; transition: border-color 0.2s, box-shadow 0.2s; animation: fadeUp 0.6s 0.1s ease both; }
-  .name-card:focus-within { border-color: var(--adobe-red); box-shadow: 0 0 0 4px rgba(250,15,0,0.08), var(--card-shadow); }
-  .name-card label { display: block; font-size: 11px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-60); margin-bottom: 10px; }
-  .name-card label span { color: var(--adobe-red); }
-  .name-input { width: 100%; border: none; outline: none; font-family: var(--font-body); font-size: 18px; font-weight: 500; color: var(--ink); background: transparent; caret-color: var(--adobe-red); }
-  .name-input::placeholder { color: var(--ink-30); font-weight: 300; }
-  .name-underline { height: 1px; background: var(--ink-10); margin-top: 10px; border-radius: 2px; transition: background 0.2s; }
-  .name-card:focus-within .name-underline { background: var(--adobe-red-mid); }
+.hdr-divider { width: 1px; height: 16px; background: rgba(255,255,255,.15); margin: 0 16px; }
 
-  /* PROGRESS */
-  .progress-bar-wrap { margin-bottom: 28px; animation: fadeUp 0.6s 0.15s ease both; }
-  .progress-meta { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
-  .progress-label { font-size: 12px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; color: var(--ink-60); }
-  .progress-count { font-size: 12px; font-weight: 600; color: var(--adobe-red); }
-  .progress-track { height: 4px; background: var(--ink-10); border-radius: 4px; overflow: hidden; }
-  .progress-fill { height: 100%; background: var(--adobe-red); border-radius: 4px; transition: width 0.4s cubic-bezier(0.4,0,0.2,1); width: 0%; }
+.hdr-context {
+  font-size: 10.5px; font-weight: 600;
+  letter-spacing: .12em; text-transform: uppercase;
+  color: rgba(255,255,255,.4);
+}
 
-  /* QUESTION CARDS */
-  .question-card { background: var(--white); border-radius: var(--radius); padding: 32px; box-shadow: var(--card-shadow); margin-bottom: 20px; border: 1.5px solid transparent; transition: border-color 0.2s, box-shadow 0.2s, transform 0.2s; animation: fadeUp 0.5s ease both; position: relative; overflow: hidden; -webkit-tap-highlight-color: transparent; }
-  .question-card:hover { box-shadow: 0 8px 28px rgba(26,26,46,0.1); transform: translateY(-1px); }
-  .question-card::before { content: ''; position: absolute; top: 0; left: 0; width: 4px; height: 100%; background: var(--ink-10); transition: background 0.25s; }
-  .question-card.answered::before { background: var(--adobe-red); }
-  .question-card.answered { border-color: rgba(250,15,0,0.1); }
-  .question-header { display: flex; align-items: flex-start; gap: 16px; margin-bottom: 24px; }
-  .q-number { flex-shrink: 0; width: 32px; height: 32px; background: var(--ink-10); border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 700; color: var(--ink-60); transition: background 0.25s, color 0.25s; }
-  .question-card.answered .q-number { background: var(--adobe-red); color: var(--white); }
-  .q-tag { flex-shrink: 0; font-size: 10px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; background: var(--ink-10); color: var(--ink-60); padding: 3px 9px; border-radius: 20px; margin-top: 6px; }
-  .q-text { font-size: 16px; line-height: 1.55; font-weight: 500; color: var(--ink); flex: 1; padding-top: 4px; }
+.hdr-pill {
+  margin-left: auto;
+  background: var(--red);
+  color: #fff;
+  font-size: 9.5px; font-weight: 700;
+  letter-spacing: .1em; text-transform: uppercase;
+  padding: 4px 12px; border-radius: 100px;
+}
 
-  /* OPTIONS */
-  .options-grid { display: grid; gap: 10px; }
-  .option-label { display: flex; align-items: center; gap: 14px; padding: 14px 18px; border-radius: var(--radius-sm); border: 1.5px solid var(--ink-10); cursor: pointer; transition: border-color 0.18s, background 0.18s, transform 0.12s; user-select: none; -webkit-tap-highlight-color: transparent; touch-action: manipulation; }
-  .option-label:hover { border-color: rgba(250,15,0,0.3); background: var(--adobe-red-light); transform: translateX(2px); }
-  .option-label input[type="radio"] { display: none; }
-  .option-label input[type="radio"]:checked ~ .option-dot { background: var(--adobe-red); border-color: var(--adobe-red); box-shadow: 0 0 0 3px rgba(250,15,0,0.15); }
-  .option-label input[type="radio"]:checked ~ .option-dot::after { opacity: 1; }
-  .option-label:has(input:checked) { border-color: var(--adobe-red); background: var(--adobe-red-light); }
-  .option-dot { width: 18px; height: 18px; flex-shrink: 0; border-radius: 50%; border: 2px solid var(--ink-30); background: var(--white); transition: all 0.18s; position: relative; }
-  .option-dot::after { content: ''; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 8px; height: 8px; border-radius: 50%; background: var(--white); opacity: 0; transition: opacity 0.15s; }
-  .option-letter { font-size: 11px; font-weight: 700; color: var(--ink-60); width: 18px; flex-shrink: 0; text-transform: uppercase; }
-  .option-label:has(input:checked) .option-letter { color: var(--adobe-red); }
-  .option-text { font-size: 14.5px; line-height: 1.45; color: var(--ink); font-weight: 400; }
+/* ── HERO BAND ── */
+.hero-band {
+  position: relative; z-index: 1;
+  background: var(--ink);
+  padding: 64px 40px 56px;
+  text-align: center;
+  overflow: hidden;
+}
 
-  /* SUBMIT */
-  .submit-section { margin-top: 40px; text-align: center; animation: fadeUp 0.6s 0.2s ease both; }
-  .submit-hint { font-size: 13px; color: var(--ink-60); margin-bottom: 20px; }
-  .submit-hint strong { color: var(--ink); }
-  .btn-submit { display: inline-flex; align-items: center; gap: 10px; background: var(--adobe-red); color: var(--white); font-family: var(--font-body); font-size: 15px; font-weight: 600; border: none; border-radius: 50px; padding: 16px 40px; cursor: pointer; transition: background 0.18s, transform 0.15s, box-shadow 0.18s; box-shadow: 0 4px 16px rgba(250,15,0,0.25); -webkit-tap-highlight-color: transparent; touch-action: manipulation; }
-  .btn-submit:hover { background: var(--adobe-red-dark); transform: translateY(-2px); box-shadow: 0 8px 24px rgba(250,15,0,0.35); }
-  .btn-submit:active { transform: translateY(0); }
-  .btn-submit svg { width: 18px; height: 18px; }
-  .btn-submit:disabled { background: var(--ink-30); cursor: not-allowed; box-shadow: none; transform: none; }
+/* Red glow blobs */
+.hero-band::before {
+  content: '';
+  position: absolute; top: -80px; left: 50%; transform: translateX(-50%);
+  width: 600px; height: 300px;
+  background: radial-gradient(ellipse, rgba(250,15,0,.18) 0%, transparent 70%);
+  pointer-events: none;
+}
+.hero-band::after {
+  content: '';
+  position: absolute; bottom: -40px; right: -80px;
+  width: 320px; height: 320px;
+  background: radial-gradient(circle, rgba(250,15,0,.08) 0%, transparent 70%);
+  pointer-events: none;
+}
 
-  /* ADMIN */
-  .admin-section { margin-top: 24px; opacity: 0; pointer-events: none; height: 0; overflow: hidden; transition: opacity 0.3s; }
-  .admin-section.visible { opacity: 1; pointer-events: all; height: auto; }
-  .admin-trigger { font-size: 11px; color: var(--ink-10); cursor: default; user-select: none; margin-top: 20px; display: block; transition: color 0.3s; }
-  .admin-trigger:hover { color: var(--ink-30); }
-  .btn-download { display: inline-flex; align-items: center; gap: 8px; background: transparent; color: var(--ink-60); font-family: var(--font-body); font-size: 13px; font-weight: 500; border: 1.5px solid var(--ink-30); border-radius: 8px; padding: 10px 20px; cursor: pointer; transition: all 0.18s; }
-  .btn-download:hover { border-color: var(--adobe-red); color: var(--adobe-red); background: var(--adobe-red-light); }
-  .btn-download svg { width: 15px; height: 15px; }
+.hero-eyebrow {
+  display: inline-flex; align-items: center; gap: 10px;
+  font-size: 10px; font-weight: 700; letter-spacing: .18em; text-transform: uppercase;
+  color: var(--red); margin-bottom: 22px;
+  position: relative; z-index: 1;
+}
+.hero-eyebrow::before, .hero-eyebrow::after {
+  content: ''; display: block;
+  width: 28px; height: 1px; background: var(--red); opacity: .5;
+}
 
-  /* SUCCESS */
-  .success-overlay { display: none; position: fixed; inset: 0; background: rgba(248,248,252,0.96); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); z-index: 200; align-items: center; justify-content: center; padding: 20px; }
-  .success-overlay.show { display: flex; }
-  .success-box { background: var(--white); border-radius: 24px; padding: 56px 48px; text-align: center; max-width: 480px; width: 100%; box-shadow: 0 32px 80px rgba(26,26,46,0.15); animation: popIn 0.5s cubic-bezier(0.34,1.56,0.64,1) both; }
-  .success-icon { width: 72px; height: 72px; background: linear-gradient(135deg, #00C851, #00A341); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 24px; animation: successPulse 0.6s 0.3s ease both; }
-  .success-icon svg { width: 36px; height: 36px; color: white; }
-  .success-title { font-family: var(--font-display); font-size: 28px; color: var(--ink); margin-bottom: 12px; line-height: 1.2; }
-  .success-msg { font-size: 15px; color: var(--ink-60); line-height: 1.6; margin-bottom: 8px; }
-  .success-name { display: inline-block; font-weight: 600; color: var(--adobe-red); font-size: 16px; margin-bottom: 28px; }
-  .success-footer { font-size: 12px; color: var(--ink-30); letter-spacing: 0.04em; }
+.hero-title {
+  font-family: var(--serif);
+  font-size: clamp(36px, 6vw, 68px);
+  font-weight: 900;
+  line-height: .95; letter-spacing: -.03em;
+  color: #fff;
+  margin-bottom: 18px;
+  position: relative; z-index: 1;
+}
+.hero-title em { color: var(--red); font-style: italic; font-weight: 400; }
 
-  /* VALIDATION */
-  .validation-msg { background: #FFF3CD; border: 1px solid #FFEAA7; border-radius: 10px; padding: 12px 18px; font-size: 13px; color: #856404; margin-bottom: 16px; display: none; }
-  .validation-msg.show { display: block; }
+.hero-sub {
+  font-size: 15px; color: rgba(255,255,255,.45);
+  font-weight: 300; line-height: 1.6;
+  max-width: 480px; margin: 0 auto 36px;
+  position: relative; z-index: 1;
+}
 
-  /* ANIMATIONS */
-  @keyframes fadeUp { from { opacity:0; transform:translateY(20px); } to { opacity:1; transform:translateY(0); } }
-  @keyframes popIn { from { opacity:0; transform:scale(0.85); } to { opacity:1; transform:scale(1); } }
-  @keyframes successPulse { 0% { transform:scale(0); opacity:0; } 60% { transform:scale(1.15); } 100% { transform:scale(1); opacity:1; } }
+/* Hero stat row */
+.hero-stats {
+  display: inline-flex; gap: 0;
+  border: 1px solid rgba(255,255,255,.1);
+  border-radius: 12px; overflow: hidden;
+  position: relative; z-index: 1;
+}
+.hero-stat {
+  padding: 14px 28px;
+  border-right: 1px solid rgba(255,255,255,.1);
+  text-align: center;
+}
+.hero-stat:last-child { border-right: none; }
+.hero-stat-n {
+  font-family: var(--serif);
+  font-size: 26px; font-weight: 700; color: #fff; line-height: 1;
+}
+.hero-stat-l {
+  font-size: 9.5px; font-weight: 600; letter-spacing: .1em; text-transform: uppercase;
+  color: rgba(255,255,255,.35); margin-top: 4px;
+}
 
-  /* FOOTER */
-  .site-footer { text-align: center; padding: 40px 24px 24px; position: relative; z-index: 1; }
-  .footer-divider { width: 40px; height: 2px; background: var(--ink-10); border-radius: 2px; margin: 0 auto 16px; }
-  .footer-text { font-size: 12px; color: var(--ink-30); letter-spacing: 0.04em; }
+/* ── PAGE WRAP ── */
+.wrap {
+  max-width: 820px; margin: 0 auto;
+  padding: 48px 28px 96px;
+  position: relative; z-index: 1;
+}
 
-  /* RESPONSIVE */
-  @media (max-width: 600px) {
-    .container { padding: 28px 16px 60px; }
-    .site-header { padding: 0 18px; }
-    .question-card { padding: 24px 18px; }
-    .name-card { padding: 22px 18px; }
-    .success-box { padding: 38px 24px; }
-    .topic-grid { grid-template-columns: repeat(2, 1fr); }
-    .cyber-row { grid-template-columns: 1fr; }
-    .quiz-title { font-size: 28px; }
-  }
+/* ── SECTION LABEL ── */
+.sec-eyebrow {
+  display: flex; align-items: center; gap: 10px;
+  font-size: 9.5px; font-weight: 700; letter-spacing: .16em; text-transform: uppercase;
+  color: var(--ink-50); margin-bottom: 18px;
+}
+.sec-eyebrow::after {
+  content: ''; flex: 1; height: 1px; background: var(--ink-08);
+}
+
+/* ── INFOGRAPHIC GRID ── */
+.topic-grid {
+  display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px;
+  margin-bottom: 10px;
+}
+.topic-card {
+  background: var(--white);
+  border: 1.5px solid var(--ink-08);
+  border-radius: 14px; padding: 18px 12px 15px;
+  text-align: center; cursor: default;
+  transition: border-color .2s, box-shadow .2s, transform .18s;
+  position: relative; overflow: hidden;
+}
+.topic-card::before {
+  content: ''; position: absolute; inset: 0;
+  background: linear-gradient(135deg, rgba(250,15,0,.03) 0%, transparent 60%);
+  opacity: 0; transition: opacity .2s;
+}
+.topic-card:hover {
+  border-color: rgba(250,15,0,.3);
+  box-shadow: 0 8px 28px rgba(250,15,0,.1);
+  transform: translateY(-3px);
+}
+.topic-card:hover::before { opacity: 1; }
+.topic-card-bar {
+  position: absolute; top: 0; left: 0; right: 0; height: 3px;
+  background: linear-gradient(90deg, var(--red-dark), var(--red));
+  transform: scaleX(0); transform-origin: left; transition: transform .22s var(--ease-out);
+}
+.topic-card:hover .topic-card-bar { transform: scaleX(1); }
+.topic-icon { font-size: 24px; line-height: 1; margin-bottom: 9px; display: block; }
+.topic-name { font-size: 11px; font-weight: 700; color: var(--ink); line-height: 1.3; }
+.topic-count { font-size: 9.5px; color: var(--ink-20); font-weight: 500; margin-top: 3px; }
+
+/* ── CYBERSECURITY ROW ── */
+.cyber-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 48px; }
+.cyber-card {
+  background: var(--ink);
+  border: 1.5px solid rgba(250,15,0,.25);
+  border-radius: 14px; padding: 16px 20px;
+  display: flex; align-items: center; gap: 16px;
+  transition: transform .18s, box-shadow .18s, border-color .18s;
+  position: relative; overflow: hidden; cursor: default;
+}
+.cyber-card::before {
+  content: ''; position: absolute; top: 0; left: 0; bottom: 0;
+  width: 3px; background: var(--red);
+}
+.cyber-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 28px rgba(250,15,0,.18);
+  border-color: rgba(250,15,0,.5);
+}
+.cyber-icon-wrap {
+  width: 40px; height: 40px; border-radius: 10px;
+  background: rgba(250,15,0,.12); border: 1px solid rgba(250,15,0,.25);
+  display: grid; place-items: center;
+  font-size: 18px; flex-shrink: 0;
+}
+.cyber-title { font-size: 12.5px; font-weight: 700; color: #fff; line-height: 1.3; }
+.cyber-sub { font-size: 10px; color: rgba(255,255,255,.38); margin-top: 2px; line-height: 1.4; }
+.cyber-badge {
+  display: inline-block;
+  font-size: 8.5px; font-weight: 800; letter-spacing: .09em; text-transform: uppercase;
+  background: rgba(250,15,0,.2); color: rgba(250,15,0,.9);
+  padding: 2px 7px; border-radius: 4px; margin-top: 5px;
+}
+
+/* ── NAME CARD ── */
+.name-card {
+  background: var(--white);
+  border: 1.5px solid var(--ink-08);
+  border-radius: 16px; padding: 26px 32px;
+  margin-bottom: 36px;
+  transition: border-color .2s, box-shadow .2s;
+  position: relative; overflow: hidden;
+}
+.name-card::before {
+  content: ''; position: absolute; left: 0; top: 0; bottom: 0;
+  width: 3px; background: var(--ink-08); transition: background .2s;
+}
+.name-card:focus-within {
+  border-color: rgba(250,15,0,.35);
+  box-shadow: 0 0 0 4px rgba(250,15,0,.06), 0 4px 20px rgba(0,0,0,.06);
+}
+.name-card:focus-within::before { background: var(--red); }
+.name-lbl {
+  display: block; font-size: 10px; font-weight: 700;
+  letter-spacing: .12em; text-transform: uppercase;
+  color: var(--ink-50); margin-bottom: 9px;
+}
+.name-lbl span { color: var(--red); }
+.name-input {
+  width: 100%; border: none; outline: none;
+  font-family: var(--serif);
+  font-size: 22px; font-weight: 400;
+  color: var(--ink); background: transparent;
+  caret-color: var(--red); line-height: 1.3;
+}
+.name-input::placeholder { color: var(--ink-20); font-style: italic; }
+.name-rule {
+  height: 1px; background: var(--ink-08); margin-top: 10px;
+  border-radius: 1px; transition: background .2s;
+}
+.name-card:focus-within .name-rule { background: rgba(250,15,0,.3); }
+
+/* ── PROGRESS ── */
+.prog-wrap { margin-bottom: 36px; }
+.prog-row {
+  display: flex; justify-content: space-between; align-items: baseline;
+  margin-bottom: 8px;
+}
+.prog-lbl {
+  font-size: 10px; font-weight: 700;
+  letter-spacing: .12em; text-transform: uppercase; color: var(--ink-50);
+}
+.prog-count {
+  font-family: var(--serif);
+  font-size: 17px; font-weight: 700; color: var(--red);
+}
+.prog-track {
+  height: 3px; background: var(--ink-08);
+  border-radius: 3px; overflow: hidden; position: relative;
+}
+.prog-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--red-dark) 0%, var(--red) 100%);
+  border-radius: 3px; width: 0%;
+  transition: width .5s var(--ease-out);
+  position: relative;
+}
+.prog-fill::after {
+  content: '';
+  position: absolute; right: -1px; top: 50%; transform: translateY(-50%);
+  width: 7px; height: 7px; border-radius: 50%;
+  background: var(--red);
+  box-shadow: 0 0 0 3px rgba(250,15,0,.2), 0 0 10px rgba(250,15,0,.4);
+  opacity: 0; transition: opacity .3s;
+}
+.prog-fill.live::after { opacity: 1; }
+
+/* ── QUESTION CARDS ── */
+.question-card {
+  background: var(--white);
+  border: 1.5px solid var(--ink-08);
+  border-radius: 18px;
+  padding: 30px 32px 26px;
+  margin-bottom: 14px;
+  transition: border-color .22s, box-shadow .22s, transform .18s;
+  position: relative; overflow: hidden;
+  -webkit-tap-highlight-color: transparent;
+}
+.question-card:hover {
+  border-color: rgba(0,0,0,.1);
+  box-shadow: 0 8px 32px rgba(0,0,0,.07);
+  transform: translateY(-1px);
+}
+.question-card.answered { border-color: rgba(250,15,0,.2); }
+
+/* left accent bar */
+.q-accent {
+  position: absolute; top: 0; left: 0; bottom: 0;
+  width: 4px;
+  background: var(--ink-08);
+  transition: background .25s;
+}
+.question-card.answered .q-accent { background: var(--red); }
+
+/* card top row */
+.q-row {
+  display: flex; align-items: center; gap: 10px; margin-bottom: 14px;
+}
+.q-num {
+  width: 30px; height: 30px; border-radius: 8px;
+  background: var(--ink-04);
+  display: grid; place-items: center;
+  font-size: 11px; font-weight: 800; color: var(--ink-50);
+  flex-shrink: 0; transition: background .22s, color .22s;
+}
+.question-card.answered .q-num { background: var(--red); color: #fff; }
+.q-tag {
+  font-size: 9.5px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase;
+  background: var(--ink-04); color: var(--ink-50);
+  padding: 3px 10px; border-radius: 100px;
+}
+.q-tick {
+  margin-left: auto; width: 22px; height: 22px; border-radius: 50%;
+  border: 1.5px solid var(--ink-08); display: grid; place-items: center;
+  flex-shrink: 0; transition: all .22s;
+}
+.q-tick svg { width: 10px; height: 10px; transition: stroke .2s; }
+.question-card.answered .q-tick { background: var(--red); border-color: var(--red); }
+.question-card.answered .q-tick svg { stroke: #fff; }
+
+.q-text {
+  font-family: var(--sans);
+  font-size: 16px; font-weight: 600; line-height: 1.55;
+  color: var(--ink); margin-bottom: 20px; letter-spacing: -.01em;
+}
+
+/* ── OPTIONS ── */
+.options-grid { display: grid; gap: 8px; }
+.opt-lbl {
+  display: flex; align-items: center; gap: 13px;
+  padding: 13px 16px;
+  border: 1.5px solid var(--ink-08);
+  border-radius: 10px; cursor: pointer;
+  transition: border-color .15s, background .15s, transform .1s;
+  user-select: none; -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation; position: relative; overflow: hidden;
+}
+.opt-lbl::before {
+  content: ''; position: absolute; inset: 0;
+  background: rgba(250,15,0,.04); opacity: 0; transition: opacity .15s;
+}
+.opt-lbl:hover { border-color: rgba(250,15,0,.25); }
+.opt-lbl:hover::before { opacity: 1; }
+.opt-lbl input[type="radio"] { display: none; }
+.opt-lbl:has(input:checked) {
+  border-color: var(--red);
+  background: rgba(250,15,0,.03);
+}
+.opt-lbl:has(input:checked)::before { opacity: 0; }
+
+.opt-radio {
+  width: 17px; height: 17px; flex-shrink: 0; border-radius: 50%;
+  border: 2px solid var(--ink-20); background: var(--white);
+  transition: all .15s; position: relative; z-index: 1;
+}
+.opt-lbl:has(input:checked) .opt-radio {
+  background: var(--red); border-color: var(--red);
+  box-shadow: 0 0 0 3px rgba(250,15,0,.15);
+}
+.opt-radio::after {
+  content: ''; position: absolute; top: 50%; left: 50%;
+  transform: translate(-50%,-50%) scale(0);
+  width: 6px; height: 6px; border-radius: 50%; background: #fff;
+  transition: transform .14s;
+}
+.opt-lbl:has(input:checked) .opt-radio::after { transform: translate(-50%,-50%) scale(1); }
+
+.opt-letter {
+  font-size: 10px; font-weight: 800; color: var(--ink-50);
+  width: 14px; flex-shrink: 0; position: relative; z-index: 1;
+  transition: color .13s;
+}
+.opt-lbl:has(input:checked) .opt-letter { color: var(--red); }
+
+.opt-text {
+  font-size: 14px; line-height: 1.48; color: var(--ink-80);
+  flex: 1; position: relative; z-index: 1; transition: color .13s;
+}
+.opt-lbl:has(input:checked) .opt-text { color: var(--ink); font-weight: 500; }
+
+/* ── VALIDATION ── */
+.val-msg {
+  display: none;
+  background: #FFF8E6; border: 1px solid #FFD966;
+  border-left: 3px solid #F5A623;
+  border-radius: 10px; padding: 12px 16px;
+  font-size: 13px; color: #7A4F00; font-weight: 500;
+  margin-bottom: 16px;
+}
+.val-msg.on { display: block; }
+
+/* ── SUBMIT ── */
+.submit-area {
+  margin-top: 44px; text-align: center;
+}
+.submit-note { font-size: 13px; color: var(--ink-50); margin-bottom: 20px; line-height: 1.6; }
+.submit-note strong { color: var(--ink-80); font-weight: 600; }
+
+.btn-submit {
+  display: inline-flex; align-items: center; gap: 10px;
+  background: var(--red); color: #fff;
+  font-family: var(--sans); font-size: 13.5px; font-weight: 700;
+  letter-spacing: .07em; text-transform: uppercase;
+  border: none; border-radius: 100px;
+  padding: 16px 44px; cursor: pointer;
+  transition: background .18s, transform .14s, box-shadow .18s;
+  box-shadow: 0 4px 20px rgba(250,15,0,.3), 0 1px 0 rgba(255,255,255,.15) inset;
+  -webkit-tap-highlight-color: transparent; touch-action: manipulation;
+}
+.btn-submit:hover {
+  background: var(--red-dark); transform: translateY(-2px);
+  box-shadow: 0 10px 32px rgba(250,15,0,.4);
+}
+.btn-submit:active { transform: translateY(0); }
+.btn-submit:disabled {
+  background: var(--ink-20); cursor: not-allowed;
+  box-shadow: none; transform: none;
+}
+.btn-submit svg { width: 17px; height: 17px; }
+
+/* ── SUCCESS OVERLAY ── */
+.success-veil {
+  display: none; position: fixed; inset: 0; z-index: 400;
+  background: rgba(12,12,20,.92);
+  backdrop-filter: blur(24px) saturate(180%);
+  -webkit-backdrop-filter: blur(24px) saturate(180%);
+  align-items: center; justify-content: center; padding: 24px;
+}
+.success-veil.on { display: flex; }
+
+.success-card {
+  background: var(--white);
+  border-radius: 24px; padding: 60px 52px;
+  text-align: center; max-width: 500px; width: 100%;
+  box-shadow: 0 48px 120px rgba(0,0,0,.4);
+  animation: cardIn .6s var(--ease-back) both;
+}
+.success-ring {
+  width: 76px; height: 76px; border-radius: 50%;
+  background: linear-gradient(135deg, #00D664, #00A341);
+  display: grid; place-items: center;
+  margin: 0 auto 28px;
+  box-shadow: 0 8px 32px rgba(0,195,80,.3);
+  animation: ringPop .7s .2s var(--ease-back) both;
+}
+.success-ring svg { width: 36px; height: 36px; color: #fff; }
+.success-h {
+  font-family: var(--serif);
+  font-size: 34px; font-weight: 700;
+  color: var(--ink); line-height: 1.1; margin-bottom: 10px;
+}
+.success-sub { font-size: 15px; color: var(--ink-50); margin-bottom: 4px; line-height: 1.6; }
+.success-name {
+  display: block; font-family: var(--serif);
+  font-size: 22px; font-weight: 700; font-style: italic;
+  color: var(--red); margin-bottom: 24px;
+}
+.success-confirm {
+  display: inline-flex; align-items: center; gap: 7px;
+  background: rgba(0,195,80,.07); border: 1px solid rgba(0,163,65,.2);
+  color: #006D2A; font-size: 12.5px; font-weight: 700;
+  padding: 9px 20px; border-radius: 100px; margin-bottom: 26px;
+}
+.success-footer {
+  font-size: 10.5px; color: var(--ink-20);
+  letter-spacing: .06em; text-transform: uppercase;
+}
+
+/* ── FOOTER ── */
+.site-footer {
+  text-align: center; padding: 36px 28px 24px;
+  position: relative; z-index: 1; max-width: 820px; margin: 0 auto;
+}
+.footer-rule {
+  width: 32px; height: 2px; background: var(--ink-08);
+  border-radius: 2px; margin: 0 auto 14px;
+}
+.footer-txt { font-size: 11.5px; color: var(--ink-20); letter-spacing: .04em; }
+.footer-gs { font-size: 10.5px; color: var(--ink-08); margin-top: 6px; }
+
+/* ── ANIMATIONS ── */
+@keyframes fadeUp { from { opacity:0; transform:translateY(22px); } to { opacity:1; transform:translateY(0); } }
+@keyframes cardIn { from { opacity:0; transform:scale(.88) translateY(20px); } to { opacity:1; transform:scale(1) translateY(0); } }
+@keyframes ringPop { 0% { opacity:0; transform:scale(0); } 70% { transform:scale(1.12); } 100% { opacity:1; transform:scale(1); } }
+
+.hero-band, .infographic-strip-wrap { animation: fadeUp .6s var(--ease-out) both; }
+.name-card  { animation: fadeUp .5s .08s var(--ease-out) both; }
+.prog-wrap  { animation: fadeUp .5s .12s var(--ease-out) both; }
+
+/* ── RESPONSIVE ── */
+@media (max-width: 620px) {
+  .hdr { padding: 0 20px; }
+  .hero-band { padding: 48px 20px 44px; }
+  .hero-stats { flex-direction: column; }
+  .hero-stat { border-right: none; border-bottom: 1px solid rgba(255,255,255,.1); padding: 12px 24px; }
+  .hero-stat:last-child { border-bottom: none; }
+  .wrap { padding: 32px 18px 72px; }
+  .topic-grid { grid-template-columns: repeat(2, 1fr); }
+  .cyber-row { grid-template-columns: 1fr; }
+  .question-card { padding: 24px 18px 20px; }
+  .name-card { padding: 22px 20px; }
+  .success-card { padding: 44px 28px; }
+  .btn-submit { padding: 16px 32px; width: 100%; justify-content: center; }
+}
 </style>
 </head>
 <body>
 
-<!-- HEADER -->
-<header class="site-header">
-  <div class="adobe-logo">
-    <div class="adobe-logo-mark">
-      <!--
-        Adobe "A" mark — two triangles on red, matching the official logo exactly.
-        Left triangle: solid white. Right triangle: white at 55% opacity.
-        Crossbar: punched out to show the red background.
-      -->
-      <svg viewBox="0 0 48 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+<!-- ── HEADER ── -->
+<header class="hdr">
+  <div class="hdr-logo">
+    <div class="hdr-a">
+      <svg viewBox="0 0 48 40" fill="none">
         <path d="M0 40L16 0H27V40H0Z" fill="white"/>
-        <path d="M48 40L32 0H21V40H48Z" fill="white" opacity="0.55"/>
+        <path d="M48 40L32 0H21V40H48Z" fill="white" opacity=".55"/>
         <path d="M16 24H32L30 29H18L16 24Z" fill="#FA0F00"/>
       </svg>
     </div>
-    <span class="adobe-logo-text">Adobe</span>
+    <span class="hdr-brand">Adobe</span>
   </div>
-  <span class="header-badge">AI Week 2026</span>
+  <div class="hdr-divider"></div>
+  <span class="hdr-context">TGRC · AI Week 2026</span>
+  <div class="hdr-pill">Internal Only</div>
 </header>
 
-<!-- MAIN -->
-<main class="container" id="quizContainer">
-
-  <!-- HERO -->
-  <div class="quiz-hero">
-    <div class="quiz-eyebrow">Knowledge Check</div>
-    <h1 class="quiz-title">Adobe <span>AI Week</span> Quiz</h1>
-    <p class="quiz-subtitle">Test your foundational and intermediate AI knowledge across key topics</p>
+<!-- ── HERO BAND ── -->
+<div class="hero-band">
+  <div class="hero-eyebrow">Knowledge Assessment · 2026</div>
+  <h1 class="hero-title">Adobe <em>AI Week</em> Quiz</h1>
+  <p class="hero-sub">Test your knowledge across AI fundamentals, agents, enterprise deployment, and critical cybersecurity concepts.</p>
+  <div class="hero-stats">
+    <div class="hero-stat">
+      <div class="hero-stat-n">10</div>
+      <div class="hero-stat-l">Questions</div>
+    </div>
+    <div class="hero-stat">
+      <div class="hero-stat-n">5–8</div>
+      <div class="hero-stat-l">Minutes</div>
+    </div>
+    <div class="hero-stat">
+      <div class="hero-stat-n">8+</div>
+      <div class="hero-stat-l">Topics</div>
+    </div>
   </div>
+</div>
 
-  <!-- INFOGRAPHIC STRIP -->
-  <div class="infographic-strip">
-    <div class="strip-label">10 Questions Across These Topics</div>
+<!-- ── MAIN ── -->
+<div class="wrap">
 
-    <!-- Core AI topics grid -->
+  <!-- Infographic strip -->
+  <div class="infographic-strip-wrap">
+    <div class="sec-eyebrow">Topics covered</div>
+
     <div class="topic-grid">
       <div class="topic-card">
+        <div class="topic-card-bar"></div>
         <span class="topic-icon">🧠</span>
         <div class="topic-name">AI Fundamentals</div>
         <div class="topic-count">1 question</div>
       </div>
       <div class="topic-card">
+        <div class="topic-card-bar"></div>
         <span class="topic-icon">🤖</span>
         <div class="topic-name">AI Agents</div>
         <div class="topic-count">1 question</div>
       </div>
       <div class="topic-card">
+        <div class="topic-card-bar"></div>
         <span class="topic-icon">🎯</span>
         <div class="topic-name">Orchestrators</div>
         <div class="topic-count">1 question</div>
       </div>
       <div class="topic-card">
+        <div class="topic-card-bar"></div>
         <span class="topic-icon">📚</span>
         <div class="topic-name">RAG</div>
         <div class="topic-count">1 question</div>
       </div>
       <div class="topic-card">
+        <div class="topic-card-bar"></div>
         <span class="topic-icon">🔍</span>
         <div class="topic-name">Vector Databases</div>
         <div class="topic-count">1 question</div>
       </div>
       <div class="topic-card">
+        <div class="topic-card-bar"></div>
         <span class="topic-icon">🔧</span>
         <div class="topic-name">Tools &amp; MCP</div>
         <div class="topic-count">1 question</div>
       </div>
       <div class="topic-card">
+        <div class="topic-card-bar"></div>
         <span class="topic-icon">💬</span>
         <div class="topic-name">Prompting</div>
         <div class="topic-count">1 question</div>
       </div>
       <div class="topic-card">
+        <div class="topic-card-bar"></div>
         <span class="topic-icon">🏢</span>
         <div class="topic-name">AI in Enterprise</div>
         <div class="topic-count">1 question</div>
       </div>
     </div>
 
-    <!-- Cybersecurity mandatory highlight -->
     <div class="cyber-row">
       <div class="cyber-card">
-        <div class="cyber-icon">💉</div>
-        <div class="cyber-info">
+        <div class="cyber-icon-wrap">💉</div>
+        <div>
           <div class="cyber-title">Prompt Injection</div>
           <div class="cyber-sub">Hijacking AI model behaviour via malicious inputs</div>
           <div class="cyber-badge">Cybersecurity · Mandatory</div>
         </div>
       </div>
       <div class="cyber-card">
-        <div class="cyber-icon">🔓</div>
-        <div class="cyber-info">
+        <div class="cyber-icon-wrap">🔓</div>
+        <div>
           <div class="cyber-title">Data Leakage Risks</div>
           <div class="cyber-sub">Sensitive data exposure through LLM responses</div>
           <div class="cyber-badge">Cybersecurity · Mandatory</div>
@@ -272,204 +684,203 @@
     </div>
   </div>
 
-  <!-- NAME INPUT -->
+  <!-- NAME -->
+  <div class="sec-eyebrow">Participant</div>
   <div class="name-card">
-    <label for="participantName">Your Full Name <span>*</span></label>
-    <input type="text" id="participantName" class="name-input" placeholder="Enter your name to begin..." autocomplete="name" maxlength="80" autocorrect="off" autocapitalize="words" spellcheck="false"/>
-    <div class="name-underline"></div>
+    <label class="name-lbl" for="participantName">Full Name <span>*</span></label>
+    <input type="text" id="participantName" class="name-input"
+           placeholder="Your name here…"
+           autocomplete="name" maxlength="80"
+           autocorrect="off" autocapitalize="words" spellcheck="false"/>
+    <div class="name-rule"></div>
   </div>
 
   <!-- PROGRESS -->
-  <div class="progress-bar-wrap">
-    <div class="progress-meta">
-      <span class="progress-label">Progress</span>
-      <span class="progress-count" id="progressCount">0 / 10 answered</span>
+  <div class="prog-wrap">
+    <div class="prog-row">
+      <span class="prog-lbl">Progress</span>
+      <span class="prog-count" id="progCount">0 / 10</span>
     </div>
-    <div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
+    <div class="prog-track">
+      <div class="prog-fill" id="progFill"></div>
+    </div>
   </div>
 
   <!-- QUESTIONS -->
-  <div id="questionsContainer"></div>
+  <div class="sec-eyebrow">Questions</div>
+  <div id="qWrap"></div>
 
   <!-- VALIDATION -->
-  <div class="validation-msg" id="validationMsg">⚠️ Please enter your name and answer all questions before submitting.</div>
+  <div class="val-msg" id="valMsg">⚠️  Please enter your full name and answer all 10 questions before submitting.</div>
 
   <!-- SUBMIT -->
-  <div class="submit-section">
-    <p class="submit-hint">All fields are required. <strong>Answers are not scored live.</strong></p>
+  <div class="submit-area">
+    <p class="submit-note">All fields required. <strong>Responses are not scored live</strong> — results reviewed by the TGRC team.</p>
     <button class="btn-submit" id="submitBtn" onclick="handleSubmit()">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 2L11 13M22 2L15 22 11 13 2 9l20-7z"/></svg>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M22 2L11 13M22 2L15 22 11 13 2 9l20-7z"/>
+      </svg>
       Submit Responses
     </button>
   </div>
 
-  <!-- No admin download needed — all responses go directly to Google Sheet -->
-
-</main>
+</div><!-- /wrap -->
 
 <!-- SUCCESS OVERLAY -->
-<div class="success-overlay" id="successOverlay">
-  <div class="success-box">
-    <div class="success-icon">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+<div class="success-veil" id="successVeil">
+  <div class="success-card">
+    <div class="success-ring">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+        <polyline points="20 6 9 17 4 12"/>
+      </svg>
     </div>
-    <h2 class="success-title">You're all done!</h2>
-    <p class="success-msg">Thank you for participating,</p>
+    <h2 class="success-h">All done!</h2>
+    <p class="success-sub">Thank you for participating,</p>
     <span class="success-name" id="successName"></span>
-    <p class="success-msg">✅ Your responses have been recorded.</p>
-    <br>
-    <p class="success-footer">Results will be reviewed by the AI Week team · Adobe TGRC · Internal</p>
+    <div class="success-confirm">
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+      Responses recorded
+    </div>
+    <p class="success-footer">Adobe TGRC · AI Week 2026 · Internal</p>
   </div>
 </div>
 
 <!-- FOOTER -->
 <footer class="site-footer">
-  <div class="footer-divider"></div>
-  <p class="footer-text">Adobe AI Week · Internal Use Only · 2026</p>
-  <span style="font-size:11px;color:var(--ink-10)">Responses saved to Google Sheets</span>
+  <div class="footer-rule"></div>
+  <div class="footer-txt">Adobe AI Week · Internal Use Only · 2026</div>
+  <div class="footer-gs">Responses saved to Google Sheets</div>
 </footer>
 
 <script>
-const QUESTIONS=[
-  {id:"q1",tag:"AI Fundamentals",text:"Which of the following best describes a Large Language Model (LLM)?",options:["A rule-based system that follows explicit if-then logic to generate text","A deep learning model trained on large text corpora to predict and generate language","A database that stores and retrieves pre-written responses to user queries","A search engine that ranks web pages based on keyword relevance"],answer:"B"},
-  {id:"q2",tag:"AI Agents",text:"What distinguishes an AI Agent from a standard LLM chatbot?",options:["An AI Agent uses a larger language model with more parameters","An AI Agent can only process images, not text","An AI Agent can autonomously plan, take actions, use tools, and pursue goals over multiple steps","An AI Agent requires no human oversight or intervention"],answer:"C"},
-  {id:"q3",tag:"Orchestrators",text:"In a multi-agent AI system, what is the primary role of an Orchestrator?",options:["To store and index vector embeddings for semantic search","To coordinate and direct multiple specialized agents toward completing a complex task","To fine-tune the base LLM on domain-specific data","To enforce rate limits and manage API quotas across services"],answer:"B"},
-  {id:"q4",tag:"RAG",text:"Retrieval-Augmented Generation (RAG) primarily addresses which LLM limitation?",options:["The inability of LLMs to process multilingual inputs","The high computational cost of running inference at scale","The knowledge cutoff and hallucination issues by grounding responses in retrieved documents","The lack of code-generation capabilities in foundational models"],answer:"C"},
-  {id:"q5",tag:"Vector Databases",text:"How does a vector database differ from a traditional relational database in the context of AI applications?",options:["Vector databases use SQL queries while relational databases use natural language","Vector databases store high-dimensional embeddings and support semantic similarity search, unlike row-column relational storage","Vector databases are exclusively used for storing images and multimedia assets","Vector databases require no indexing, making them faster for all types of queries"],answer:"B"},
-  {id:"q6",tag:"Tools & MCP",text:"What does MCP (Model Context Protocol) primarily enable in AI systems?",options:["A standardized way to fine-tune models on proprietary enterprise data","A protocol for compressing large model weights for edge deployment","A standardized interface for AI models to discover and use external tools, APIs, and data sources","A method for encrypting LLM API keys and credentials"],answer:"C"},
-  {id:"q7",tag:"Prompting",text:"Which prompting technique involves providing the model with worked examples within the prompt itself to guide its output format?",options:["Zero-shot prompting","Few-shot prompting","Chain-of-thought prompting","Retrieval-augmented prompting"],answer:"B"},
-  {id:"q8",tag:"AI in Enterprise",text:"When deploying an LLM in an enterprise setting, which governance concern is most critical?",options:["Ensuring the model uses the newest GPU architecture available","Maximizing the context window size to handle all document lengths","Establishing data classification, access controls, and audit trails for model inputs and outputs","Selecting the model with the highest score on public benchmarks"],answer:"C"},
-  {id:"q9",tag:"AI + Cybersecurity",text:"What is a prompt injection attack in the context of AI systems?",options:["Flooding an AI API with rapid requests to cause a denial-of-service condition","Injecting malicious or manipulative instructions into user input to hijack the AI model's behavior or override system prompts","Using SQL injection techniques to corrupt the vector database backing an AI application","Intercepting network traffic between the LLM and its API gateway"],answer:"B"},
-  {id:"q10",tag:"AI + Cybersecurity",text:"Which scenario represents a data leakage risk specific to LLM-based enterprise applications?",options:["A developer uses a public benchmark dataset to evaluate model performance","An employee queries an internal LLM that has been inadvertently trained on or has access to confidential HR records, causing sensitive data to appear in responses","An AI model generates code with a deprecated library version","A model returns a factually incorrect answer about a competitor's product"],answer:"B"}
+// ═══════════════════════════════════════════════════════════════════
+//  QUIZ DATA  (answer key internal — never shown)
+// ═══════════════════════════════════════════════════════════════════
+const QS = [
+  {id:"q1",  tag:"AI Fundamentals",  text:"Which of the following best describes a Large Language Model (LLM)?", opts:["A rule-based system that follows explicit if-then logic to generate text","A deep learning model trained on large text corpora to predict and generate language","A database that stores and retrieves pre-written responses to user queries","A search engine that ranks web pages based on keyword relevance"], ans:"B"},
+  {id:"q2",  tag:"AI Agents",        text:"What distinguishes an AI Agent from a standard LLM chatbot?", opts:["An AI Agent uses a larger language model with more parameters","An AI Agent can only process images, not text","An AI Agent can autonomously plan, take actions, use tools, and pursue goals over multiple steps","An AI Agent requires no human oversight or intervention"], ans:"C"},
+  {id:"q3",  tag:"Orchestrators",    text:"In a multi-agent AI system, what is the primary role of an Orchestrator?", opts:["To store and index vector embeddings for semantic search","To coordinate and direct multiple specialized agents toward completing a complex task","To fine-tune the base LLM on domain-specific data","To enforce rate limits and manage API quotas across services"], ans:"B"},
+  {id:"q4",  tag:"RAG",              text:"Retrieval-Augmented Generation (RAG) primarily addresses which LLM limitation?", opts:["The inability of LLMs to process multilingual inputs","The high computational cost of running inference at scale","The knowledge cutoff and hallucination issues by grounding responses in retrieved documents","The lack of code-generation capabilities in foundational models"], ans:"C"},
+  {id:"q5",  tag:"Vector Databases", text:"How does a vector database differ from a traditional relational database in the context of AI applications?", opts:["Vector databases use SQL queries while relational databases use natural language","Vector databases store high-dimensional embeddings and support semantic similarity search, unlike row-column relational storage","Vector databases are exclusively used for storing images and multimedia assets","Vector databases require no indexing, making them faster for all types of queries"], ans:"B"},
+  {id:"q6",  tag:"Tools & MCP",      text:"What does MCP (Model Context Protocol) primarily enable in AI systems?", opts:["A standardized way to fine-tune models on proprietary enterprise data","A protocol for compressing large model weights for edge deployment","A standardized interface for AI models to discover and use external tools, APIs, and data sources","A method for encrypting LLM API keys and credentials"], ans:"C"},
+  {id:"q7",  tag:"Prompting",        text:"Which prompting technique involves providing the model with worked examples within the prompt itself to guide its output format?", opts:["Zero-shot prompting","Few-shot prompting","Chain-of-thought prompting","Retrieval-augmented prompting"], ans:"B"},
+  {id:"q8",  tag:"AI in Enterprise", text:"When deploying an LLM in an enterprise setting, which governance concern is most critical?", opts:["Ensuring the model uses the newest GPU architecture available","Maximizing the context window size to handle all document lengths","Establishing data classification, access controls, and audit trails for model inputs and outputs","Selecting the model with the highest score on public benchmarks"], ans:"C"},
+  {id:"q9",  tag:"AI + Cybersecurity",text:"What is a prompt injection attack in the context of AI systems?", opts:["Flooding an AI API with rapid requests to cause a denial-of-service condition","Injecting malicious or manipulative instructions into user input to hijack the AI model's behavior or override system prompts","Using SQL injection techniques to corrupt the vector database backing an AI application","Intercepting network traffic between the LLM and its API gateway"], ans:"B"},
+  {id:"q10", tag:"AI + Cybersecurity",text:"Which scenario represents a data leakage risk specific to LLM-based enterprise applications?", opts:["A developer uses a public benchmark dataset to evaluate model performance","An employee queries an internal LLM that has been inadvertently trained on or has access to confidential HR records, causing sensitive data to appear in responses","An AI model generates code with a deprecated library version","A model returns a factually incorrect answer about a competitor's product"], ans:"B"}
 ];
-const ANSWER_KEY = QUESTIONS.reduce((a,q)=>{ a[q.id]=q.answer; return a; },{});
+const KEY = QS.reduce((a,q)=>{ a[q.id]=q.ans; return a; }, {});
+const L = ['A','B','C','D'];
 
 // ═══════════════════════════════════════════════════════════════════
-//  GOOGLE SHEET WEBHOOK
-//  Every submission is POSTed directly to Google Sheets in real-time.
-//  No localStorage, no JSON files — works from any device, any browser.
+//  WEBHOOK  — URLSearchParams so body survives no-cors
 // ═══════════════════════════════════════════════════════════════════
-const WEBHOOK_URL = 'https://script.google.com/macros/s/AKfycbxnKgb0D6ZE99LaJFPEeaHUzq9O7553d-XdnCr9zYY44PEPnXcMVGeDt3ZSJwU1ReMp/exec';
+const WEBHOOK = 'https://script.google.com/macros/s/AKfycbxnKgb0D6ZE99LaJFPEeaHUzq9O7553d-XdnCr9zYY44PEPnXcMVGeDt3ZSJwU1ReMp/exec';
 
 async function sendToSheet(payload) {
-  /*
-   * ── WHY THIS WORKS ──────────────────────────────────────────────────
-   * Google Apps Script (GAS) does not send CORS headers, so the browser
-   * blocks any fetch() that reads the response. We use mode:'no-cors'
-   * to fire-and-forget — but no-cors ONLY allows "simple" request headers.
-   *
-   * ❌ BROKEN:  Content-Type: application/json  → NOT a simple header
-   *             Browser silently drops the body. GAS gets nothing.
-   *
-   * ✅ FIXED:   Send as URLSearchParams (application/x-www-form-urlencoded)
-   *             This IS a simple header. Body is always received by GAS.
-   *             In GAS, read with:  e.parameter.data  →  JSON.parse(it)
-   * ───────────────────────────────────────────────────────────────────
-   */
   try {
     const form = new URLSearchParams();
-    form.append('data', JSON.stringify(payload));   // GAS reads: e.parameter.data
-
-    await fetch(WEBHOOK_URL, {
-      method: 'POST',
-      mode:   'no-cors',   // required — GAS has no CORS headers
-      body:   form         // URLSearchParams → simple header → body always delivered
-    });
-    console.log('✅ Sent to Google Sheet:', payload.name);
+    form.append('data', JSON.stringify(payload));
+    await fetch(WEBHOOK, { method:'POST', mode:'no-cors', body: form });
+    console.log('✅ Sent:', payload.name);
     return true;
-  } catch(err) {
-    console.error('❌ Webhook error:', err);
+  } catch(e) {
+    console.error('❌ Webhook:', e);
     return false;
   }
 }
 
-// ── RENDER ──────────────────────────────────────────────────────────
-function renderQuestions(){
-  const c = document.getElementById('questionsContainer');
-  c.innerHTML = '';
-  QUESTIONS.forEach((q,i)=>{
+// ═══════════════════════════════════════════════════════════════════
+//  RENDER
+// ═══════════════════════════════════════════════════════════════════
+function render() {
+  const wrap = document.getElementById('qWrap');
+  wrap.innerHTML = '';
+  QS.forEach((q, i) => {
     const card = document.createElement('div');
     card.className = 'question-card';
-    card.id = `card_${q.id}`;
-    card.style.animationDelay = `${0.05*i+0.2}s`;
-    const opts = q.options.map((o,j)=>{
-      const l = ['A','B','C','D'][j];
-      return `<label class="option-label" for="${q.id}_${l}">
-        <input type="radio" name="${q.id}" id="${q.id}_${l}" value="${l}" onchange="onAnswerChange('${q.id}')"/>
-        <span class="option-dot"></span>
-        <span class="option-letter">${l}</span>
-        <span class="option-text">${o}</span>
+    card.id = 'card_' + q.id;
+    card.style.animationDelay = (i * .04 + .15) + 's';
+    card.style.animation = 'fadeUp .5s var(--ease-out) both';
+
+    const opts = q.opts.map((o, j) => {
+      const l = L[j];
+      return `<label class="opt-lbl" for="${q.id}_${l}">
+        <input type="radio" name="${q.id}" id="${q.id}_${l}" value="${l}" onchange="onPick('${q.id}')">
+        <span class="opt-radio"></span>
+        <span class="opt-letter">${l}</span>
+        <span class="opt-text">${o}</span>
       </label>`;
     }).join('');
+
     card.innerHTML = `
-      <div class="question-header">
-        <div class="q-number">${String(i+1).padStart(2,'0')}</div>
-        <p class="q-text">${q.text}</p>
-      </div>
-      <div class="options-grid">${opts}</div>
-      <div style="margin-top:12px;display:flex;justify-content:flex-end">
+      <div class="q-accent"></div>
+      <div class="q-row">
+        <div class="q-num">${String(i+1).padStart(2,'0')}</div>
         <span class="q-tag">${q.tag}</span>
-      </div>`;
-    c.appendChild(card);
+        <div class="q-tick">
+          <svg viewBox="0 0 24 24" fill="none" stroke="transparent" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="20 6 9 17 4 12"/>
+          </svg>
+        </div>
+      </div>
+      <p class="q-text">${q.text}</p>
+      <div class="options-grid">${opts}</div>`;
+    wrap.appendChild(card);
   });
 }
 
-function onAnswerChange(id){
-  document.getElementById(`card_${id}`).classList.add('answered');
-  updateProgress();
+function onPick(id) {
+  document.getElementById('card_' + id).classList.add('answered');
+  updateProg();
 }
-function updateProgress(){
-  const n = QUESTIONS.filter(q=>document.querySelector(`input[name="${q.id}"]:checked`)).length;
-  document.getElementById('progressCount').textContent = `${n} / ${QUESTIONS.length} answered`;
-  document.getElementById('progressFill').style.width = `${n/QUESTIONS.length*100}%`;
+
+function updateProg() {
+  const done = QS.filter(q => document.querySelector(`input[name="${q.id}"]:checked`)).length;
+  document.getElementById('progCount').textContent = done + ' / ' + QS.length;
+  const fill = document.getElementById('progFill');
+  fill.style.width = (done / QS.length * 100) + '%';
+  done > 0 ? fill.classList.add('live') : fill.classList.remove('live');
 }
-function collectAnswers(){
-  return QUESTIONS.reduce((a,q)=>{
+
+function collectAnswers() {
+  return QS.reduce((a, q) => {
     const s = document.querySelector(`input[name="${q.id}"]:checked`);
     a[q.id] = s ? s.value : null;
     return a;
-  },{});
+  }, {});
 }
 
-// ── SUBMIT ──────────────────────────────────────────────────────────
-async function handleSubmit(){
+// ═══════════════════════════════════════════════════════════════════
+//  SUBMIT
+// ═══════════════════════════════════════════════════════════════════
+async function handleSubmit() {
   const name    = document.getElementById('participantName').value.trim();
   const answers = collectAnswers();
-  const allDone = Object.values(answers).every(a=>a!==null);
-  const vm      = document.getElementById('validationMsg');
+  const allDone = Object.values(answers).every(v => v !== null);
+  const vm      = document.getElementById('valMsg');
 
-  if(!name || !allDone){
-    vm.classList.add('show');
-    vm.scrollIntoView({behavior:'smooth', block:'center'});
+  if (!name || !allDone) {
+    vm.classList.add('on');
+    vm.scrollIntoView({ behavior:'smooth', block:'center' });
     return;
   }
-  vm.classList.remove('show');
+  vm.classList.remove('on');
 
-  // Lock UI immediately so user can't double-submit
   const btn = document.getElementById('submitBtn');
   btn.disabled = true;
-  btn.innerHTML = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" width="18" height="18"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg> Sending…`;
-  document.querySelectorAll('input[type="radio"], .name-input').forEach(el=>el.disabled=true);
+  btn.innerHTML = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" width="17" height="17"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg> Sending…`;
+  document.querySelectorAll('input[type="radio"], .name-input').forEach(el => el.disabled = true);
 
-  // Build payload — exactly what goes into the Google Sheet
-  const payload = {
-    name,
-    timestamp: new Date().toISOString(),
-    answers             // { q1: "B", q2: "C", ... }
-  };
+  await sendToSheet({ name, timestamp: new Date().toISOString(), answers });
 
-  // POST to Google Sheet (fire-and-forget with no-cors — always shows success to user)
-  await sendToSheet(payload);
-
-  // Show success overlay
   document.getElementById('successName').textContent = name;
-  const ov = document.getElementById('successOverlay');
-  ov.classList.add('show');
-  ov.style.display = 'flex';
+  const veil = document.getElementById('successVeil');
+  veil.classList.add('on');
+  veil.style.display = 'flex';
 }
 
-renderQuestions();
-updateProgress();
+render();
+updateProg();
 </script>
 </body>
 </html>
