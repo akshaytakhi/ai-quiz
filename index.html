@@ -528,6 +528,100 @@ body::before {
   letter-spacing: .06em; text-transform: uppercase;
 }
 
+/* ── TIMER ── */
+.timer-bar {
+  position: sticky; top: 60px; z-index: 150;
+  background: rgba(12,12,20,.97);
+  border-bottom: 1px solid rgba(255,255,255,.07);
+  padding: 0 36px;
+  height: 44px;
+  display: flex; align-items: center; justify-content: space-between;
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+}
+.timer-label {
+  font-size: 10px; font-weight: 700; letter-spacing: .14em; text-transform: uppercase;
+  color: rgba(255,255,255,.3);
+}
+.timer-display {
+  display: flex; align-items: center; gap: 8px;
+}
+.timer-icon {
+  width: 16px; height: 16px; flex-shrink: 0;
+}
+.timer-count {
+  font-family: var(--serif);
+  font-size: 20px; font-weight: 700;
+  color: #fff; letter-spacing: .04em;
+  font-variant-numeric: tabular-nums;
+  transition: color .3s;
+  min-width: 52px; text-align: right;
+}
+.timer-count.warn  { color: #FFB300; }
+.timer-count.danger{ color: var(--red); animation: timerPulse 1s ease infinite; }
+
+.timer-track {
+  flex: 1; height: 3px;
+  background: rgba(255,255,255,.08);
+  border-radius: 3px; overflow: hidden;
+  margin: 0 20px;
+}
+.timer-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--red-dark), var(--red));
+  border-radius: 3px; width: 100%;
+  transition: width 1s linear, background .3s;
+}
+.timer-fill.warn   { background: linear-gradient(90deg, #E6890A, #FFB300); }
+.timer-fill.danger { background: linear-gradient(90deg, var(--red-dark), var(--red)); }
+
+@keyframes timerPulse {
+  0%,100% { opacity:1; }
+  50%      { opacity:.5; }
+}
+
+/* auto-submit overlay */
+.autosubmit-overlay {
+  display: none; position: fixed; inset: 0; z-index: 500;
+  background: rgba(12,12,20,.96);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  align-items: center; justify-content: center; padding: 24px;
+}
+.autosubmit-overlay.on { display: flex; }
+.autosubmit-card {
+  background: var(--white);
+  border-radius: 24px; padding: 56px 48px;
+  text-align: center; max-width: 460px; width: 100%;
+  box-shadow: 0 48px 120px rgba(0,0,0,.4);
+  animation: cardIn .5s var(--ease-back) both;
+}
+.autosubmit-icon {
+  font-size: 52px; line-height: 1; margin-bottom: 20px;
+}
+.autosubmit-h {
+  font-family: var(--serif); font-size: 28px; font-weight: 700;
+  color: var(--ink); margin-bottom: 10px;
+}
+.autosubmit-sub {
+  font-size: 14px; color: var(--ink-50); line-height: 1.65; margin-bottom: 6px;
+}
+.autosubmit-name {
+  display: block; font-family: var(--serif);
+  font-size: 20px; font-weight: 700; font-style: italic;
+  color: var(--red); margin-bottom: 22px;
+}
+.autosubmit-badge {
+  display: inline-flex; align-items: center; gap: 7px;
+  background: rgba(250,15,0,.07); border: 1px solid rgba(250,15,0,.2);
+  color: var(--red); font-size: 12.5px; font-weight: 700;
+  padding: 9px 20px; border-radius: 100px; margin-bottom: 22px;
+}
+.autosubmit-footer {
+  font-size: 10.5px; color: var(--ink-20);
+  letter-spacing: .06em; text-transform: uppercase;
+}
+
 /* ── FOOTER ── */
 .site-footer {
   text-align: center; padding: 36px 28px 24px;
@@ -585,6 +679,36 @@ body::before {
   <div class="hdr-pill">Internal Only</div>
 </header>
 
+<!-- ── TIMER BAR ── -->
+<div class="timer-bar" id="timerBar">
+  <span class="timer-label">Time Remaining</span>
+  <div class="timer-track">
+    <div class="timer-fill" id="timerFill"></div>
+  </div>
+  <div class="timer-display">
+    <svg class="timer-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color:rgba(255,255,255,.4)">
+      <circle cx="12" cy="12" r="10"/>
+      <polyline points="12 6 12 12 16 14"/>
+    </svg>
+    <span class="timer-count" id="timerCount">6:00</span>
+  </div>
+</div>
+
+<!-- ── AUTO-SUBMIT OVERLAY (shown when time runs out) ── -->
+<div class="autosubmit-overlay" id="autosubmitOverlay">
+  <div class="autosubmit-card">
+    <div class="autosubmit-icon">⏱️</div>
+    <h2 class="autosubmit-h">Time's up!</h2>
+    <p class="autosubmit-sub">Your responses have been automatically submitted,</p>
+    <span class="autosubmit-name" id="autosubmitName"></span>
+    <div class="autosubmit-badge">
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+      Responses recorded
+    </div>
+    <p class="autosubmit-footer">Adobe TGRC · AI Week 2026 · Internal</p>
+  </div>
+</div>
+
 <!-- ── HERO BAND ── -->
 <div class="hero-band">
   <div class="hero-eyebrow">Knowledge Assessment · 2026</div>
@@ -596,7 +720,7 @@ body::before {
       <div class="hero-stat-l">Questions</div>
     </div>
     <div class="hero-stat">
-      <div class="hero-stat-n">5–8</div>
+      <div class="hero-stat-n">6</div>
       <div class="hero-stat-l">Minutes</div>
     </div>
     <div class="hero-stat">
@@ -828,9 +952,16 @@ const WEBHOOK = 'https://script.google.com/macros/s/AKfycbxnKgb0D6ZE99LaJFPEeaHU
 
 async function sendToSheet(payload) {
   try {
-    const form = new URLSearchParams();
-    form.append('data', JSON.stringify(payload));
-    await fetch(WEBHOOK, { method:'POST', mode:'no-cors', body: form });
+    // Convert to plain string BEFORE passing to fetch.
+    // URLSearchParams objects trigger DataCloneError in some browsers/service workers
+    // when passed directly as body. toString() produces identical wire format.
+    const body = 'data=' + encodeURIComponent(JSON.stringify(payload));
+    await fetch(WEBHOOK, {
+      method: 'POST',
+      mode:   'no-cors',
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      body:   body
+    });
     console.log('✅ Sent:', payload.name);
     return true;
   } catch(e) {
@@ -916,6 +1047,10 @@ async function handleSubmit() {
   }
   vm.classList.remove('on');
 
+  // Stop the timer — user submitted manually before time ran out
+  clearInterval(timerInterval);
+  timerExpired = true;
+
   const btn = document.getElementById('submitBtn');
   btn.disabled = true;
   btn.innerHTML = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" width="17" height="17"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg> Sending…`;
@@ -928,6 +1063,83 @@ async function handleSubmit() {
   veil.classList.add('on');
   veil.style.display = 'flex';
 }
+
+// ═══════════════════════════════════════════════════════════════════
+//  TIMER — 6 minutes, auto-submits on expiry
+// ═══════════════════════════════════════════════════════════════════
+const TOTAL_SECONDS = 6 * 60;   // 360 seconds = 6:00
+let secondsLeft    = TOTAL_SECONDS;
+let timerInterval  = null;
+let timerExpired   = false;
+
+function formatTime(s) {
+  const m = Math.floor(s / 60);
+  const sec = s % 60;
+  return m + ':' + String(sec).padStart(2, '0');
+}
+
+function updateTimerUI() {
+  const countEl = document.getElementById('timerCount');
+  const fillEl  = document.getElementById('timerFill');
+  const pct     = (secondsLeft / TOTAL_SECONDS) * 100;
+
+  countEl.textContent = formatTime(secondsLeft);
+  fillEl.style.width  = pct + '%';
+
+  // Colour states: green → amber (≤90s) → red+pulse (≤30s)
+  countEl.classList.remove('warn', 'danger');
+  fillEl.classList.remove('warn', 'danger');
+
+  if (secondsLeft <= 30) {
+    countEl.classList.add('danger');
+    fillEl.classList.add('danger');
+  } else if (secondsLeft <= 90) {
+    countEl.classList.add('warn');
+    fillEl.classList.add('warn');
+  }
+}
+
+function autoSubmitOnExpiry() {
+  timerExpired = true;
+  clearInterval(timerInterval);
+
+  // Lock all inputs
+  document.getElementById('submitBtn').disabled = true;
+  document.querySelectorAll('input[type="radio"], .name-input').forEach(el => el.disabled = true);
+
+  const name = document.getElementById('participantName').value.trim() || 'Participant';
+  const answers = collectAnswers();
+
+  // Build payload — send whatever was answered so far (unanswered = null)
+  const payload = {
+    name,
+    timestamp: new Date().toISOString(),
+    answers
+  };
+
+  // Send to Google Sheet
+  sendToSheet(payload).then(() => {
+    // Show auto-submit overlay (different from the normal success overlay)
+    document.getElementById('autosubmitName').textContent = name;
+    const overlay = document.getElementById('autosubmitOverlay');
+    overlay.classList.add('on');
+    overlay.style.display = 'flex';
+  });
+}
+
+function startTimer() {
+  updateTimerUI();
+  timerInterval = setInterval(() => {
+    secondsLeft--;
+    updateTimerUI();
+    if (secondsLeft <= 0) {
+      autoSubmitOnExpiry();
+    }
+  }, 1000);
+}
+
+// Start timer immediately when page loads
+startTimer();
 
 render();
 updateProg();
