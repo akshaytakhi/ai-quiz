@@ -1111,9 +1111,11 @@ function autoSubmitOnExpiry() {
   const answers = collectAnswers();
 
   // Build payload — send whatever was answered so far (unanswered = null)
+  // timed_out:true tells the scoring script these two people tied on time
   const payload = {
     name,
-    timestamp: new Date().toISOString(),
+    timestamp:  new Date().toISOString(),
+    timed_out:  true,   // flag: used full 6 minutes — no early-submit advantage
     answers
   };
 
